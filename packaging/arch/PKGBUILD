@@ -13,7 +13,7 @@ pkgrel=1
 pkgdesc="Darkroom film & print manager for analog photographers"
 arch=('any')
 url="https://example.invalid/filmlog"   # TODO: project homepage
-license=('unknown')                      # TODO: choose a licence
+license=('GPL-3.0-or-later')
 depends=(
   'python'
   'pyside6'

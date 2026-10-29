@@ -159,5 +159,4 @@ each phase.
   (`packaging/icons/render_pngs.py`), Arch `PKGBUILD` building from the local
   git checkout (branch `main` by default, `FILMLOG_REF=tag=vX.Y.Z` for a tag),
   and an untested Flatpak manifest skeleton.
-- **No licence chosen yet**: `pyproject.toml` has no licence field and the
-  PKGBUILD says `unknown` — to be decided by the author.
+- **Licence**: GPL-3.0-or-later (chosen by the author), full text in `LICENSE`.
