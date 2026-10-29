@@ -7,6 +7,7 @@ import sys
 from PySide6.QtWidgets import QApplication
 
 from filmlog import paths
+from filmlog.db.database import open_database
 from filmlog.services.settings import Settings
 from filmlog.ui.context import AppContext
 from filmlog.ui.main_window import MainWindow
@@ -27,7 +28,8 @@ def build_main_window(app: QApplication) -> MainWindow:
     paths.ensure_dirs()
     settings = Settings.load()
     apply_theme(app, settings.theme)
-    ctx = AppContext(settings=settings)
+    db = open_database(paths.db_path(), paths.backups_dir())
+    ctx = AppContext(settings=settings, db=db)
     return MainWindow(ctx)
 
 

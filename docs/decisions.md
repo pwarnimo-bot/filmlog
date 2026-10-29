@@ -21,3 +21,35 @@ each phase.
 - `Esc` and `Delete` are bound per widget (forms / tables) rather than
   window-wide, so they don't interfere with text editing.
 - Extra shortcuts: `Ctrl+1…5` switch sidebar views, `Ctrl+,` opens Settings.
+
+## Phase 2 — Data layer
+
+- **Enums are stored as plain `VARCHAR(32)`** (no native enum, no CHECK
+  constraint). Adding a value later needs no migration. Stable lowercase
+  identifiers are stored; translated labels live in the UI.
+- **Paper surfaces** gained `lustre` and `semi_matt` (seed papers use them).
+  One `Paper` row per surface variant; display name is
+  "Ilford Multigrade RC Deluxe (glossy)".
+- **Film display name** is "Manufacturer Name ISO", but the ISO is not repeated
+  when it already appears in the name ("Kodak Tri-X 400", not "… 400 400").
+- **Water** is a built-in stop-bath `Chemical` row without manufacturer
+  (`is_builtin = true`); it cannot be deleted.
+- `Chemical.manufacturer_id` is nullable (needed for Water / home-brew).
+- **All catalogue tables have `discontinued`** so in-use items can be retired
+  instead of deleted.
+- **Extra roll images**: a small `roll_image` table backs the Roll → Images tab
+  (multiple scans per roll) in addition to the single `contact_sheet_image`.
+- `Print.head_height_cm` is numeric (cm, shown in inches if selected);
+  `aperture` is free text ("f/8").
+- `is_demo` flag on cameras, rolls and prints (development / exposures go
+  with their parents via cascade).
+- Total print exposure **excludes dodge rows** (dodging happens during the base
+  exposure); burns and flashes are added.
+- **Session strategy**: the UI keeps one long-lived SQLAlchemy session
+  (`expire_on_commit=False`). It's a single-user, single-process app; this keeps
+  lazy loading simple. Forms only write to ORM objects on Save.
+- Pre-migration backups use SQLite's online backup API, named
+  `filmlog-YYYYMMDD-HHMMSS.db`; a brand-new empty DB is not backed up.
+- Seed dilution strings are `;`-separated in `common_dilutions`.
+- "Kodak/Harman Selenium toner" is seeded as *Kodak Selenium Toner* with a note.
+  "Adox Adonal / R09 One Shot" is one entry with that name.

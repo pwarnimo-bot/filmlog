@@ -1,0 +1,835 @@
+{
+  "version": 1,
+  "manufacturers": [
+    {
+      "name": "Ilford",
+      "country": "United Kingdom"
+    },
+    {
+      "name": "Kentmere",
+      "country": "United Kingdom"
+    },
+    {
+      "name": "Kodak",
+      "country": "United States"
+    },
+    {
+      "name": "Fujifilm",
+      "country": "Japan"
+    },
+    {
+      "name": "Foma",
+      "country": "Czech Republic"
+    },
+    {
+      "name": "Rollei",
+      "country": "Germany"
+    },
+    {
+      "name": "Adox",
+      "country": "Germany"
+    },
+    {
+      "name": "Bergger",
+      "country": "France"
+    },
+    {
+      "name": "AgfaPhoto",
+      "country": "Germany"
+    },
+    {
+      "name": "Lomography",
+      "country": "Austria"
+    },
+    {
+      "name": "CineStill",
+      "country": "United States"
+    },
+    {
+      "name": "Moersch",
+      "country": "Germany"
+    }
+  ],
+  "film_stocks": [
+    {
+      "manufacturer": "Ilford",
+      "name": "Pan F Plus",
+      "box_iso": 50,
+      "type": "bw_negative",
+      "formats_available": "135, 120",
+      "aliases": "",
+      "discontinued": false,
+      "notes": ""
+    },
+    {
+      "manufacturer": "Ilford",
+      "name": "FP4 Plus",
+      "box_iso": 125,
+      "type": "bw_negative",
+      "formats_available": "135, 120, sheet",
+      "aliases": "",
+      "discontinued": false,
+      "notes": ""
+    },
+    {
+      "manufacturer": "Ilford",
+      "name": "HP5 Plus",
+      "box_iso": 400,
+      "type": "bw_negative",
+      "formats_available": "135, 120, sheet",
+      "aliases": "",
+      "discontinued": false,
+      "notes": "Pushes well to 800/1600"
+    },
+    {
+      "manufacturer": "Ilford",
+      "name": "Delta 100 Professional",
+      "box_iso": 100,
+      "type": "bw_negative",
+      "formats_available": "135, 120, sheet",
+      "aliases": "",
+      "discontinued": false,
+      "notes": ""
+    },
+    {
+      "manufacturer": "Ilford",
+      "name": "Delta 400 Professional",
+      "box_iso": 400,
+      "type": "bw_negative",
+      "formats_available": "135, 120",
+      "aliases": "",
+      "discontinued": false,
+      "notes": ""
+    },
+    {
+      "manufacturer": "Ilford",
+      "name": "Delta 3200 Professional",
+      "box_iso": 3200,
+      "type": "bw_negative",
+      "formats_available": "135, 120",
+      "aliases": "",
+      "discontinued": false,
+      "notes": "Nominal ISO ~1000"
+    },
+    {
+      "manufacturer": "Ilford",
+      "name": "SFX 200",
+      "box_iso": 200,
+      "type": "bw_negative",
+      "formats_available": "135, 120",
+      "aliases": "",
+      "discontinued": false,
+      "notes": "Extended red sensitivity"
+    },
+    {
+      "manufacturer": "Ilford",
+      "name": "Ortho Plus",
+      "box_iso": 80,
+      "type": "bw_negative",
+      "formats_available": "135, 120, sheet",
+      "aliases": "",
+      "discontinued": false,
+      "notes": "Orthochromatic"
+    },
+    {
+      "manufacturer": "Ilford",
+      "name": "XP2 Super",
+      "box_iso": 400,
+      "type": "bw_chromogenic",
+      "formats_available": "135, 120",
+      "aliases": "",
+      "discontinued": false,
+      "notes": "Chromogenic, C-41 process"
+    },
+    {
+      "manufacturer": "Kentmere",
+      "name": "Pan 100",
+      "box_iso": 100,
+      "type": "bw_negative",
+      "formats_available": "135",
+      "aliases": "",
+      "discontinued": false,
+      "notes": ""
+    },
+    {
+      "manufacturer": "Kentmere",
+      "name": "Pan 200",
+      "box_iso": 200,
+      "type": "bw_negative",
+      "formats_available": "135",
+      "aliases": "",
+      "discontinued": false,
+      "notes": ""
+    },
+    {
+      "manufacturer": "Kentmere",
+      "name": "Pan 400",
+      "box_iso": 400,
+      "type": "bw_negative",
+      "formats_available": "135, 120",
+      "aliases": "",
+      "discontinued": false,
+      "notes": ""
+    },
+    {
+      "manufacturer": "Kodak",
+      "name": "Tri-X 400",
+      "box_iso": 400,
+      "type": "bw_negative",
+      "formats_available": "135, 120, sheet",
+      "aliases": "",
+      "discontinued": false,
+      "notes": ""
+    },
+    {
+      "manufacturer": "Kodak",
+      "name": "Ektapan 100",
+      "box_iso": 100,
+      "type": "bw_negative",
+      "formats_available": "135, 120, sheet",
+      "aliases": "T-Max 100",
+      "discontinued": false,
+      "notes": ""
+    },
+    {
+      "manufacturer": "Kodak",
+      "name": "Ektapan 400",
+      "box_iso": 400,
+      "type": "bw_negative",
+      "formats_available": "135, 120, sheet",
+      "aliases": "T-Max 400",
+      "discontinued": false,
+      "notes": ""
+    },
+    {
+      "manufacturer": "Kodak",
+      "name": "Ektapan P3200",
+      "box_iso": 3200,
+      "type": "bw_negative",
+      "formats_available": "135",
+      "aliases": "T-Max P3200",
+      "discontinued": false,
+      "notes": ""
+    },
+    {
+      "manufacturer": "Kodak",
+      "name": "Double-X 5222",
+      "box_iso": 250,
+      "type": "bw_negative",
+      "formats_available": "135",
+      "aliases": "CineStill BwXX",
+      "discontinued": false,
+      "notes": "Motion picture stock"
+    },
+    {
+      "manufacturer": "Fujifilm",
+      "name": "Neopan 100 Acros II",
+      "box_iso": 100,
+      "type": "bw_negative",
+      "formats_available": "135, 120",
+      "aliases": "",
+      "discontinued": false,
+      "notes": ""
+    },
+    {
+      "manufacturer": "Foma",
+      "name": "Fomapan 100 Classic",
+      "box_iso": 100,
+      "type": "bw_negative",
+      "formats_available": "135, 120, sheet",
+      "aliases": "",
+      "discontinued": false,
+      "notes": ""
+    },
+    {
+      "manufacturer": "Foma",
+      "name": "Fomapan 200 Creative",
+      "box_iso": 200,
+      "type": "bw_negative",
+      "formats_available": "135, 120, sheet",
+      "aliases": "",
+      "discontinued": false,
+      "notes": ""
+    },
+    {
+      "manufacturer": "Foma",
+      "name": "Fomapan 400 Action",
+      "box_iso": 400,
+      "type": "bw_negative",
+      "formats_available": "135, 120, sheet",
+      "aliases": "",
+      "discontinued": false,
+      "notes": ""
+    },
+    {
+      "manufacturer": "Foma",
+      "name": "Retropan 320 Soft",
+      "box_iso": 320,
+      "type": "bw_negative",
+      "formats_available": "135, 120, sheet",
+      "aliases": "",
+      "discontinued": false,
+      "notes": ""
+    },
+    {
+      "manufacturer": "Rollei",
+      "name": "RPX 25",
+      "box_iso": 25,
+      "type": "bw_negative",
+      "formats_available": "135, 120",
+      "aliases": "",
+      "discontinued": false,
+      "notes": ""
+    },
+    {
+      "manufacturer": "Rollei",
+      "name": "RPX 100",
+      "box_iso": 100,
+      "type": "bw_negative",
+      "formats_available": "135, 120",
+      "aliases": "",
+      "discontinued": false,
+      "notes": ""
+    },
+    {
+      "manufacturer": "Rollei",
+      "name": "RPX 400",
+      "box_iso": 400,
+      "type": "bw_negative",
+      "formats_available": "135, 120",
+      "aliases": "",
+      "discontinued": false,
+      "notes": ""
+    },
+    {
+      "manufacturer": "Rollei",
+      "name": "Infrared 400",
+      "box_iso": 400,
+      "type": "bw_negative",
+      "formats_available": "135, 120",
+      "aliases": "",
+      "discontinued": false,
+      "notes": "Infrared-sensitive to ~820 nm"
+    },
+    {
+      "manufacturer": "Adox",
+      "name": "CHS 100 II",
+      "box_iso": 100,
+      "type": "bw_negative",
+      "formats_available": "135, 120, sheet",
+      "aliases": "",
+      "discontinued": false,
+      "notes": ""
+    },
+    {
+      "manufacturer": "Adox",
+      "name": "Scala 50",
+      "box_iso": 50,
+      "type": "bw_reversal",
+      "formats_available": "135",
+      "aliases": "",
+      "discontinued": false,
+      "notes": "B&W reversal"
+    },
+    {
+      "manufacturer": "Bergger",
+      "name": "Pancro 400",
+      "box_iso": 400,
+      "type": "bw_negative",
+      "formats_available": "135, 120, sheet",
+      "aliases": "",
+      "discontinued": false,
+      "notes": ""
+    },
+    {
+      "manufacturer": "AgfaPhoto",
+      "name": "APX 100",
+      "box_iso": 100,
+      "type": "bw_negative",
+      "formats_available": "135, 120",
+      "aliases": "",
+      "discontinued": false,
+      "notes": ""
+    },
+    {
+      "manufacturer": "AgfaPhoto",
+      "name": "APX 400",
+      "box_iso": 400,
+      "type": "bw_negative",
+      "formats_available": "135, 120",
+      "aliases": "",
+      "discontinued": false,
+      "notes": ""
+    },
+    {
+      "manufacturer": "Lomography",
+      "name": "Earl Grey 100",
+      "box_iso": 100,
+      "type": "bw_negative",
+      "formats_available": "135, 120",
+      "aliases": "",
+      "discontinued": false,
+      "notes": ""
+    },
+    {
+      "manufacturer": "Lomography",
+      "name": "Lady Grey 400",
+      "box_iso": 400,
+      "type": "bw_negative",
+      "formats_available": "135, 120",
+      "aliases": "",
+      "discontinued": false,
+      "notes": ""
+    }
+  ],
+  "chemicals": [
+    {
+      "manufacturer": "Ilford",
+      "name": "ID-11",
+      "kind": "film_developer",
+      "common_dilutions": "stock; 1+1; 1+3",
+      "form": "powder",
+      "notes": "",
+      "is_builtin": false
+    },
+    {
+      "manufacturer": "Ilford",
+      "name": "Ilfosol 3",
+      "kind": "film_developer",
+      "common_dilutions": "1+9; 1+14",
+      "form": "liquid",
+      "notes": "",
+      "is_builtin": false
+    },
+    {
+      "manufacturer": "Ilford",
+      "name": "DD-X",
+      "kind": "film_developer",
+      "common_dilutions": "1+4",
+      "form": "liquid",
+      "notes": "",
+      "is_builtin": false
+    },
+    {
+      "manufacturer": "Ilford",
+      "name": "Perceptol",
+      "kind": "film_developer",
+      "common_dilutions": "stock; 1+1; 1+3",
+      "form": "powder",
+      "notes": "",
+      "is_builtin": false
+    },
+    {
+      "manufacturer": "Ilford",
+      "name": "Microphen",
+      "kind": "film_developer",
+      "common_dilutions": "stock; 1+1; 1+3",
+      "form": "powder",
+      "notes": "",
+      "is_builtin": false
+    },
+    {
+      "manufacturer": "Ilford",
+      "name": "Ilfotec LC29",
+      "kind": "film_developer",
+      "common_dilutions": "1+9; 1+19; 1+29",
+      "form": "liquid",
+      "notes": "",
+      "is_builtin": false
+    },
+    {
+      "manufacturer": "Ilford",
+      "name": "Ilfotec HC",
+      "kind": "film_developer",
+      "common_dilutions": "1+15; 1+31",
+      "form": "liquid",
+      "notes": "",
+      "is_builtin": false
+    },
+    {
+      "manufacturer": "Kodak",
+      "name": "D-76",
+      "kind": "film_developer",
+      "common_dilutions": "stock; 1+1; 1+3",
+      "form": "powder",
+      "notes": "",
+      "is_builtin": false
+    },
+    {
+      "manufacturer": "Kodak",
+      "name": "HC-110",
+      "kind": "film_developer",
+      "common_dilutions": "1+31 (dil. B); 1+63 (dil. H)",
+      "form": "liquid",
+      "notes": "",
+      "is_builtin": false
+    },
+    {
+      "manufacturer": "Kodak",
+      "name": "XTOL",
+      "kind": "film_developer",
+      "common_dilutions": "stock; 1+1; 1+2",
+      "form": "powder",
+      "notes": "",
+      "is_builtin": false
+    },
+    {
+      "manufacturer": "Adox",
+      "name": "Adonal / R09 One Shot",
+      "kind": "film_developer",
+      "common_dilutions": "1+25; 1+50; 1+100",
+      "form": "liquid",
+      "notes": "Rodinal-type developer",
+      "is_builtin": false
+    },
+    {
+      "manufacturer": "Adox",
+      "name": "FX-39 II",
+      "kind": "film_developer",
+      "common_dilutions": "1+9; 1+14",
+      "form": "liquid",
+      "notes": "",
+      "is_builtin": false
+    },
+    {
+      "manufacturer": "Kodak",
+      "name": "T-Max Developer",
+      "kind": "film_developer",
+      "common_dilutions": "1+4",
+      "form": "liquid",
+      "notes": "",
+      "is_builtin": false
+    },
+    {
+      "manufacturer": "CineStill",
+      "name": "Df96",
+      "kind": "film_developer",
+      "common_dilutions": "stock",
+      "form": "liquid",
+      "notes": "Monobath (develop + fix in one step)",
+      "is_builtin": false
+    },
+    {
+      "manufacturer": "Ilford",
+      "name": "Multigrade",
+      "kind": "paper_developer",
+      "common_dilutions": "1+9; 1+14",
+      "form": "liquid",
+      "notes": "",
+      "is_builtin": false
+    },
+    {
+      "manufacturer": "Ilford",
+      "name": "PQ Universal",
+      "kind": "paper_developer",
+      "common_dilutions": "1+9",
+      "form": "liquid",
+      "notes": "",
+      "is_builtin": false
+    },
+    {
+      "manufacturer": "Ilford",
+      "name": "Bromophen",
+      "kind": "paper_developer",
+      "common_dilutions": "1+3",
+      "form": "powder",
+      "notes": "",
+      "is_builtin": false
+    },
+    {
+      "manufacturer": "Kodak",
+      "name": "Dektol",
+      "kind": "paper_developer",
+      "common_dilutions": "1+2",
+      "form": "powder",
+      "notes": "",
+      "is_builtin": false
+    },
+    {
+      "manufacturer": "Moersch",
+      "name": "Eco 4812",
+      "kind": "paper_developer",
+      "common_dilutions": "1+9",
+      "form": "liquid",
+      "notes": "",
+      "is_builtin": false
+    },
+    {
+      "manufacturer": null,
+      "name": "Water",
+      "kind": "stop_bath",
+      "common_dilutions": "",
+      "form": "liquid",
+      "notes": "Plain water stop",
+      "is_builtin": true
+    },
+    {
+      "manufacturer": "Ilford",
+      "name": "Ilfostop",
+      "kind": "stop_bath",
+      "common_dilutions": "1+19",
+      "form": "liquid",
+      "notes": "",
+      "is_builtin": false
+    },
+    {
+      "manufacturer": "Kodak",
+      "name": "Indicator Stop Bath",
+      "kind": "stop_bath",
+      "common_dilutions": "1+63",
+      "form": "liquid",
+      "notes": "",
+      "is_builtin": false
+    },
+    {
+      "manufacturer": "Ilford",
+      "name": "Rapid Fixer",
+      "kind": "fixer",
+      "common_dilutions": "1+4; 1+9",
+      "form": "liquid",
+      "notes": "1+4 for film & paper, 1+9 for paper",
+      "is_builtin": false
+    },
+    {
+      "manufacturer": "Ilford",
+      "name": "Hypam",
+      "kind": "fixer",
+      "common_dilutions": "1+4",
+      "form": "liquid",
+      "notes": "",
+      "is_builtin": false
+    },
+    {
+      "manufacturer": "Adox",
+      "name": "Adofix Plus",
+      "kind": "fixer",
+      "common_dilutions": "1+5; 1+7",
+      "form": "liquid",
+      "notes": "",
+      "is_builtin": false
+    },
+    {
+      "manufacturer": "Kodak",
+      "name": "Professional Fixer",
+      "kind": "fixer",
+      "common_dilutions": "1+3",
+      "form": "liquid",
+      "notes": "",
+      "is_builtin": false
+    },
+    {
+      "manufacturer": "Ilford",
+      "name": "Ilfotol",
+      "kind": "wetting_agent",
+      "common_dilutions": "1+200",
+      "form": "liquid",
+      "notes": "",
+      "is_builtin": false
+    },
+    {
+      "manufacturer": "Kodak",
+      "name": "Photo-Flo 200",
+      "kind": "wetting_agent",
+      "common_dilutions": "1+200",
+      "form": "liquid",
+      "notes": "",
+      "is_builtin": false
+    },
+    {
+      "manufacturer": "Ilford",
+      "name": "Washaid",
+      "kind": "washing_aid",
+      "common_dilutions": "1+4",
+      "form": "liquid",
+      "notes": "",
+      "is_builtin": false
+    },
+    {
+      "manufacturer": "Kodak",
+      "name": "Selenium Toner",
+      "kind": "toner",
+      "common_dilutions": "1+9; 1+19; 1+20",
+      "form": "liquid",
+      "notes": "Also sold by Harman; dilute 1+9 to 1+20",
+      "is_builtin": false
+    }
+  ],
+  "papers": [
+    {
+      "manufacturer": "Ilford",
+      "name": "Multigrade RC Deluxe",
+      "base": "rc",
+      "contrast_type": "variable",
+      "grade": null,
+      "surface": "glossy",
+      "tone": "neutral"
+    },
+    {
+      "manufacturer": "Ilford",
+      "name": "Multigrade RC Deluxe",
+      "base": "rc",
+      "contrast_type": "variable",
+      "grade": null,
+      "surface": "pearl",
+      "tone": "neutral"
+    },
+    {
+      "manufacturer": "Ilford",
+      "name": "Multigrade RC Deluxe",
+      "base": "rc",
+      "contrast_type": "variable",
+      "grade": null,
+      "surface": "satin",
+      "tone": "neutral"
+    },
+    {
+      "manufacturer": "Ilford",
+      "name": "Multigrade RC Cooltone",
+      "base": "rc",
+      "contrast_type": "variable",
+      "grade": null,
+      "surface": "glossy",
+      "tone": "cool"
+    },
+    {
+      "manufacturer": "Ilford",
+      "name": "Multigrade RC Cooltone",
+      "base": "rc",
+      "contrast_type": "variable",
+      "grade": null,
+      "surface": "pearl",
+      "tone": "cool"
+    },
+    {
+      "manufacturer": "Ilford",
+      "name": "Multigrade FB Classic",
+      "base": "fb",
+      "contrast_type": "variable",
+      "grade": null,
+      "surface": "glossy",
+      "tone": "neutral"
+    },
+    {
+      "manufacturer": "Ilford",
+      "name": "Multigrade FB Classic",
+      "base": "fb",
+      "contrast_type": "variable",
+      "grade": null,
+      "surface": "matt",
+      "tone": "neutral"
+    },
+    {
+      "manufacturer": "Ilford",
+      "name": "Multigrade FB Warmtone",
+      "base": "fb",
+      "contrast_type": "variable",
+      "grade": null,
+      "surface": "glossy",
+      "tone": "warm"
+    },
+    {
+      "manufacturer": "Ilford",
+      "name": "Multigrade FB Warmtone",
+      "base": "fb",
+      "contrast_type": "variable",
+      "grade": null,
+      "surface": "semi_matt",
+      "tone": "warm"
+    },
+    {
+      "manufacturer": "Kentmere",
+      "name": "VC Select",
+      "base": "rc",
+      "contrast_type": "variable",
+      "grade": null,
+      "surface": "glossy",
+      "tone": "neutral"
+    },
+    {
+      "manufacturer": "Kentmere",
+      "name": "VC Select",
+      "base": "rc",
+      "contrast_type": "variable",
+      "grade": null,
+      "surface": "lustre",
+      "tone": "neutral"
+    },
+    {
+      "manufacturer": "Foma",
+      "name": "Fomaspeed Variant III",
+      "base": "rc",
+      "contrast_type": "variable",
+      "grade": null,
+      "surface": "glossy",
+      "tone": "neutral"
+    },
+    {
+      "manufacturer": "Foma",
+      "name": "Fomabrom Variant 111",
+      "base": "fb",
+      "contrast_type": "variable",
+      "grade": null,
+      "surface": "glossy",
+      "tone": "neutral"
+    },
+    {
+      "manufacturer": "Adox",
+      "name": "MCC 110",
+      "base": "fb",
+      "contrast_type": "variable",
+      "grade": null,
+      "surface": "glossy",
+      "tone": "neutral"
+    },
+    {
+      "manufacturer": "Adox",
+      "name": "MCP 312",
+      "base": "rc",
+      "contrast_type": "variable",
+      "grade": null,
+      "surface": "semi_matt",
+      "tone": "neutral"
+    },
+    {
+      "manufacturer": "Bergger",
+      "name": "Prestige Variable CB",
+      "base": "fb",
+      "contrast_type": "variable",
+      "grade": null,
+      "surface": "glossy",
+      "tone": "warm"
+    }
+  ],
+  "agitation_presets": [
+    {
+      "name": "Ilford",
+      "text": "Ilford: 4 inversions in first 10 s, then 4 inversions each minute",
+      "sort_order": 0
+    },
+    {
+      "name": "Kodak",
+      "text": "Kodak: 5–7 inversions in first 30 s, then 5 s every 30 s",
+      "sort_order": 1
+    },
+    {
+      "name": "Continuous rotary (Jobo)",
+      "text": "Continuous rotary (Jobo)",
+      "sort_order": 2
+    },
+    {
+      "name": "Stand",
+      "text": "Stand: 30 s initial, then none",
+      "sort_order": 3
+    },
+    {
+      "name": "Semi-stand",
+      "text": "Semi-stand: initial + one at half time",
+      "sort_order": 4
+    },
+    {
+      "name": "Custom",
+      "text": "",
+      "sort_order": 5
+    }
+  ]
+}

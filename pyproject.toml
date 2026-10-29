@@ -38,6 +38,9 @@ src = ["src", "tests"]
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "UP", "B", "SIM"]
 
+[tool.ruff.lint.per-file-ignores]
+"src/filmlog/db/migrations/versions/*" = ["E501"]
+
 [tool.mypy]
 python_version = "3.12"
 mypy_path = "src"
