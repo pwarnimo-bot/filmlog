@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2026 Pol Warnimont
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 """Development form with pre-fill note and a "past results" recipe panel."""
 
 from __future__ import annotations

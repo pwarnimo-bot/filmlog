@@ -1,9 +1,12 @@
+# SPDX-FileCopyrightText: 2026 Pol Warnimont
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 """Statistics view: a few simple charts (QtCharts if available, else tables)."""
 
 from __future__ import annotations
 
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QColor, QPainter
+from PySide6.QtGui import QPainter
 from PySide6.QtWidgets import (
     QFrame,
     QGridLayout,
@@ -19,7 +22,7 @@ from PySide6.QtWidgets import (
 from filmlog.services.stats import compute
 from filmlog.ui.base_view import BaseView
 from filmlog.ui.context import AppContext
-from filmlog.ui.theme import current_theme
+from filmlog.ui.theme import accent_colour
 from filmlog.ui.widgets import push_pull_badge
 
 try:
@@ -38,10 +41,6 @@ except ImportError:  # e.g. distro PySide6 without the QtCharts module
     HAVE_CHARTS = False
 
 
-def _bar_colour() -> QColor:
-    return QColor("#8a1010") if current_theme() == "darkroom" else QColor("#4f7fb8")
-
-
 def _chart(title: str, data: list[tuple[str, int]], horizontal: bool) -> QWidget:
     if not HAVE_CHARTS:
         table = QTableWidget(len(data), 2)
@@ -53,7 +52,8 @@ def _chart(title: str, data: list[tuple[str, int]], horizontal: bool) -> QWidget
         return table
     pal = QWidget().palette()
     bars = QBarSet(title)
-    bars.setColor(_bar_colour())
+    bars.setColor(accent_colour())
+    bars.setBorderColor(accent_colour())
     labels = [k for k, _ in data]
     values = [v for _, v in data]
     if horizontal:
@@ -83,6 +83,9 @@ def _chart(title: str, data: list[tuple[str, int]], horizontal: bool) -> QWidget
     vals.setRange(0, step * ticks)
     vals.setTickCount(ticks + 1)
     vals.setLabelsBrush(pal.text())
+    for axis in (cats, vals):
+        axis.setGridLineColor(pal.mid().color())
+        axis.setLinePenColor(pal.mid().color())
     if horizontal:
         chart.addAxis(cats, Qt.AlignmentFlag.AlignLeft)
         chart.addAxis(vals, Qt.AlignmentFlag.AlignBottom)

@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2026 Pol Warnimont
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 """Prints view: every print across rolls, filterable, editable in place."""
 
 from __future__ import annotations

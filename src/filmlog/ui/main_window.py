@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2026 Pol Warnimont
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 """Main window: sidebar navigation + stacked views + menus."""
 
 from __future__ import annotations
@@ -5,7 +8,7 @@ from __future__ import annotations
 import contextlib
 
 from PySide6.QtCore import QByteArray, QSize
-from PySide6.QtGui import QAction, QCloseEvent, QKeySequence
+from PySide6.QtGui import QAction, QCloseEvent, QGuiApplication, QKeySequence
 from PySide6.QtWidgets import (
     QApplication,
     QHBoxLayout,
@@ -17,7 +20,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from filmlog import __version__
+from filmlog import __copyright__, __version__
 from filmlog.ui import file_actions as fa
 from filmlog.ui.base_view import BaseView
 from filmlog.ui.cameras_view import CamerasView
@@ -56,6 +59,8 @@ class MainWindow(QMainWindow):
             self._add_view(view)
 
         self.sidebar.currentRowChanged.connect(self._on_nav)
+        with contextlib.suppress(AttributeError):  # Qt < 6.5 has no colorSchemeChanged
+            QGuiApplication.styleHints().colorSchemeChanged.connect(self._system_scheme_changed)
         self._build_menus()
         self._restore_state()
 
@@ -160,6 +165,13 @@ class MainWindow(QMainWindow):
             act.triggered.connect(lambda _=False, i=i: self.show_view(i))
             self.addAction(act)
 
+    def _system_scheme_changed(self, *_: object) -> None:
+        """The desktop switched light/dark: follow it when the theme is "system"."""
+        app = QApplication.instance()
+        if self.ctx.settings.theme == "system" and isinstance(app, QApplication):
+            apply_theme(app, "system")
+            self.refresh_all()
+
     def refresh_all(self) -> None:
         for v in self.views:
             v.refresh()
@@ -196,7 +208,16 @@ class MainWindow(QMainWindow):
         QMessageBox.about(
             self,
             self.tr("About FilmLog"),
-            self.tr("<b>FilmLog</b> {0}<br>Darkroom film &amp; print manager.").format(__version__),
+            self.tr(
+                "<h3>FilmLog {0}</h3>"
+                "<p>Darkroom film &amp; print manager.</p>"
+                "<p>{1} — written by Pol Warnimont, developed with the help of "
+                "Claude (Anthropic).</p>"
+                "<p>This program is free software: you can redistribute it and/or modify "
+                "it under the terms of the GNU General Public License, version 3 or "
+                "(at your option) any later version. It comes with ABSOLUTELY NO "
+                "WARRANTY.</p>"
+            ).format(__version__, __copyright__),
         )
 
     # -- state ---------------------------------------------------------------

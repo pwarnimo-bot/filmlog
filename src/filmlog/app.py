@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2026 Pol Warnimont
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 """QApplication setup: theme, main window."""
 
 from __future__ import annotations
@@ -13,12 +16,13 @@ from filmlog.db.database import open_database
 from filmlog.services.settings import Settings
 from filmlog.ui.context import AppContext
 from filmlog.ui.main_window import MainWindow
-from filmlog.ui.theme import apply_theme
+from filmlog.ui.theme import apply_theme, configure_platform_theme
 
 
 def create_app(argv: list[str] | None = None) -> QApplication:
     app = QApplication.instance()
     if not isinstance(app, QApplication):
+        configure_platform_theme()
         app = QApplication(argv if argv is not None else sys.argv)
     app.setApplicationName("FilmLog")
     app.setOrganizationName("filmlog")

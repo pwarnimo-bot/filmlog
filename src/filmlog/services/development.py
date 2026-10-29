@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2026 Pol Warnimont
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 """Development records: pre-fill lookup and past results ("recipes")."""
 
 from __future__ import annotations

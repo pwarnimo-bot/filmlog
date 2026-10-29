@@ -1,4 +1,4 @@
-# Maintainer: pwarnimont <pwarnimo@gmail.com>
+# Maintainer: Pol Warnimont <pwarnimo@gmail.com>
 #
 # Builds FilmLog from this local git checkout.
 #   cd packaging/arch && makepkg -si

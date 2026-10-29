@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2026 Pol Warnimont
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 """Print form with the ordered exposure table (single / split grade / dodge / burn)."""
 
 from __future__ import annotations

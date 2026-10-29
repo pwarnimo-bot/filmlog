@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2026 Pol Warnimont
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 """Parsing and formatting of durations.
 
 Durations are stored as integer seconds and shown as ``m:ss`` (minutes may

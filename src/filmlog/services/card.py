@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2026 Pol Warnimont
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 """HTML for the printable "darkroom card" of a roll (rendered to PDF by the UI)."""
 
 from __future__ import annotations

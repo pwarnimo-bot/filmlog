@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2026 Pol Warnimont
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 from __future__ import annotations
 
 from PySide6.QtWidgets import QApplication
@@ -19,3 +22,51 @@ def test_theme_switching(main_window: MainWindow) -> None:
     for mode in ("light", "dark", "darkroom", "system"):
         apply_theme(app, mode)
         assert app.property("filmlog_theme") in ("light", "dark", "darkroom")
+
+
+def test_platform_theme_choice() -> None:
+    from filmlog.ui.theme import platform_theme_for
+
+    assert platform_theme_for({"XDG_CURRENT_DESKTOP": "sway:wlroots"}, "linux") == "gtk3"
+    assert platform_theme_for({"XDG_CURRENT_DESKTOP": "Hyprland"}, "linux") == "gtk3"
+    assert platform_theme_for({}, "linux") == "gtk3"
+    assert platform_theme_for({"XDG_CURRENT_DESKTOP": "KDE"}, "linux") is None
+    assert platform_theme_for({"XDG_CURRENT_DESKTOP": "ubuntu:GNOME"}, "linux") is None
+    explicit = {"XDG_CURRENT_DESKTOP": "sway", "QT_QPA_PLATFORMTHEME": "qt6ct"}
+    assert platform_theme_for(explicit, "linux") is None
+    assert platform_theme_for({}, "win32") is None
+
+
+def test_system_theme_restores_platform_palette(main_window: MainWindow) -> None:
+    from PySide6.QtGui import QPalette
+
+    from filmlog.ui.theme import current_theme
+
+    app = QApplication.instance()
+    assert isinstance(app, QApplication)
+    platform_window = QPalette().color(QPalette.ColorRole.Window).name()
+    apply_theme(app, "darkroom")
+    assert app.palette().color(QPalette.ColorRole.Window).name() == "#000000"
+    apply_theme(app, "system")
+    assert app.palette().color(QPalette.ColorRole.Window).name() == platform_window
+    assert current_theme() in ("light", "dark")
+
+
+def test_light_and_dark_use_system_accent(main_window: MainWindow) -> None:
+    from PySide6.QtGui import QColor, QPalette
+
+    from filmlog.ui import theme
+
+    app = QApplication.instance()
+    assert isinstance(app, QApplication)
+    saved = theme._system_accent
+    try:
+        theme._system_accent = QColor("#307d80")
+        for mode in ("light", "dark"):
+            apply_theme(app, mode)
+            assert app.palette().color(QPalette.ColorRole.Highlight).name() == "#307d80"
+        apply_theme(app, "darkroom")  # darkroom keeps its own red palette
+        assert app.palette().color(QPalette.ColorRole.Highlight).name() == "#3a0505"
+    finally:
+        theme._system_accent = saved
+        apply_theme(app, "system")

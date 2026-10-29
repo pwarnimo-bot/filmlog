@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2026 Pol Warnimont
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 """Enumerations stored as plain strings in the database.
 
 Values are stable identifiers (never shown to the user); human-readable labels

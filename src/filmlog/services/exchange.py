@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2026 Pol Warnimont
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 """Export (CSV zip, nested JSON) and JSON import (merge by roll code).
 
 The JSON format references catalogue entries by natural keys (manufacturer +

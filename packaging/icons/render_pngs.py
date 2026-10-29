@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2026 Pol Warnimont
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 """Render the SVG app icon to hicolor PNG sizes (run after editing the SVG).
 
 uv run python packaging/icons/render_pngs.py

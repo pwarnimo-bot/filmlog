@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2026 Pol Warnimont
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 """Settings dialog: theme and units."""
 
 from __future__ import annotations
@@ -22,7 +25,7 @@ class SettingsDialog(QDialog):
 
         self.theme = QComboBox()
         for key, label in (
-            ("system", self.tr("Follow system")),
+            ("system", self.tr("Follow system (colours, light/dark)")),
             ("light", self.tr("Light")),
             ("dark", self.tr("Dark")),
             ("darkroom", self.tr("Darkroom (red on black)")),

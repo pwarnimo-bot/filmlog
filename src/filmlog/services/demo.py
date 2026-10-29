@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2026 Pol Warnimont
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 """Demo cameras / rolls / prints (Help → Load demo data / Remove demo data)."""
 
 from __future__ import annotations

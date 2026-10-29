@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2026 Pol Warnimont
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 """Rolls view (main screen): roll list with filters + Roll / Development / Prints tabs."""
 
 from __future__ import annotations

@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2026 Pol Warnimont
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 """Roll detail tabs: Prints (cards) and Images (contact sheet + scans)."""
 
 from __future__ import annotations

@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2026 Pol Warnimont
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 """Run Alembic migrations at start-up, backing up the DB first."""
 
 from __future__ import annotations

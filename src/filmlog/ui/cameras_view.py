@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2026 Pol Warnimont
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 """Cameras view: table of cameras with detail form and the camera's rolls."""
 
 from __future__ import annotations

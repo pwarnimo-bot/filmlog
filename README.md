@@ -16,8 +16,11 @@ PySide6 (Qt 6) and SQLite. Works fully offline.
 - Images (contact sheets, scans, print photos) copied into the app's data
   folder with thumbnails.
 - Statistics, CSV/JSON export, JSON import, printable PDF "darkroom card".
-- Light, Dark and **Darkroom** theme (black background, dim red text; images
-  are shown as dim red monochrome).
+- Follows your desktop's colours and light/dark mode by default (also on
+  Sway/Hyprland/i3 via the GTK theme); Light, Dark and **Darkroom** themes
+  (black background, dim red text; images shown as dim red monochrome) can be
+  chosen in Settings. To use another Qt theme engine, set
+  `QT_QPA_PLATFORMTHEME` yourself (e.g. `qt6ct`).
 
 ## Install
 
@@ -127,7 +130,13 @@ After editing the SVG icon, regenerate the PNGs with
 Design decisions taken during development are listed in
 [`docs/decisions.md`](docs/decisions.md).
 
+## Author
+
+Written by **Pol Warnimont**, developed with the help of Claude (Anthropic).
+
 ## Licence
+
+Copyright © 2026 Pol Warnimont.
 
 FilmLog is free software: you can redistribute it and/or modify it under the
 terms of the GNU General Public License as published by the Free Software

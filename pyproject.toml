@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "Darkroom film & print manager for analog photographers"
 readme = "README.md"
 license = "GPL-3.0-or-later"
+authors = [{ name = "Pol Warnimont", email = "pwarnimo@gmail.com" }]
 license-files = ["LICENSE"]
 requires-python = ">=3.12"
 dependencies = [

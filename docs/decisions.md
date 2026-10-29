@@ -160,3 +160,19 @@ each phase.
   git checkout (branch `main` by default, `FILMLOG_REF=tag=vX.Y.Z` for a tag),
   and an untested Flatpak manifest skeleton.
 - **Licence**: GPL-3.0-or-later (chosen by the author), full text in `LICENSE`.
+
+## After v0.1 — system colours & authorship
+
+- **"Follow system" uses the desktop's palette** (restored with an empty
+  `QPalette`, which Qt resolves to the platform palette) and follows live
+  light/dark switches via `QStyleHints.colorSchemeChanged`.
+- On desktops Qt doesn't recognise (Sway, Hyprland, i3, niri, …) Qt would fall
+  back to plain Fusion colours. FilmLog then requests Qt's **GTK 3 platform
+  theme** (`QT_QPA_PLATFORMTHEME=gtk3`) before creating the application, so the
+  GTK theme's colours, accent and dark/light preference are used. KDE, GNOME,
+  Cinnamon, MATE, Xfce, LXQt etc. are left to Qt; an explicit
+  `QT_QPA_PLATFORMTHEME` (e.g. `qt6ct`) always wins.
+- Light and Dark themes keep their own palettes but adopt the **system accent
+  colour** for selections. Darkroom stays red-only. Charts use the accent too.
+- Author: **Pol Warnimont**, developed with the help of Claude (Anthropic).
+  SPDX headers (`GPL-3.0-or-later`) on all Python files.

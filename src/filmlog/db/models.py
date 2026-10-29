@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2026 Pol Warnimont
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 """SQLAlchemy ORM models (typed 2.x style)."""
 
 from __future__ import annotations

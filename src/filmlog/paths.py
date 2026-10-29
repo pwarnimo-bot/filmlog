@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2026 Pol Warnimont
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 """Filesystem locations (XDG-correct via platformdirs).
 
 The database location can be overridden with the ``FILMLOG_DB`` environment
