@@ -4,7 +4,6 @@ version = "0.1.0"
 description = "Darkroom film & print manager for analog photographers"
 readme = "README.md"
 requires-python = ">=3.12"
-license = { text = "GPL-3.0-or-later" }
 dependencies = [
     "PySide6>=6.6",
     "SQLAlchemy>=2.0",

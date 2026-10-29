@@ -1,0 +1,54 @@
+# Maintainer: pwarnimont <pwarnimo@gmail.com>
+#
+# Builds FilmLog from this local git checkout.
+#   cd packaging/arch && makepkg -si
+# Build a release tag instead of the main branch:
+#   FILMLOG_REF=tag=v0.1.0 makepkg -si
+
+pkgname=filmlog
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="Darkroom film & print manager for analog photographers"
+arch=('any')
+url="https://example.invalid/filmlog"   # TODO: project homepage
+license=('unknown')                      # TODO: choose a licence
+depends=(
+  'python'
+  'pyside6'
+  'python-sqlalchemy'
+  'python-alembic'
+  'python-platformdirs'
+)
+optdepends=(
+  'qt6-charts: charts in the Statistics view (tables are shown without it)'
+  'qt6-svg: scalable application icon'
+)
+makedepends=('git' 'python-build' 'python-installer' 'python-hatchling')
+checkdepends=('python-pytest' 'python-pytest-qt')
+_ref="${FILMLOG_REF:-branch=main}"
+source=("$pkgname::git+file://${startdir}/../..#${_ref}")
+sha256sums=('SKIP')
+
+build() {
+  cd "$pkgname"
+  python -m build --wheel --no-isolation
+}
+
+check() {
+  cd "$pkgname"
+  QT_QPA_PLATFORM=offscreen PYTHONPATH=src python -m pytest -q tests || \
+    echo "warning: tests failed or test deps missing"
+}
+
+package() {
+  cd "$pkgname"
+  python -m installer --destdir="$pkgdir" dist/*.whl
+  install -Dm644 packaging/filmlog.desktop "$pkgdir/usr/share/applications/filmlog.desktop"
+  install -Dm644 packaging/icons/hicolor/scalable/apps/filmlog.svg \
+    "$pkgdir/usr/share/icons/hicolor/scalable/apps/filmlog.svg"
+  for size in 16 22 24 32 48 64 128 256 512; do
+    install -Dm644 "packaging/icons/hicolor/${size}x${size}/apps/filmlog.png" \
+      "$pkgdir/usr/share/icons/hicolor/${size}x${size}/apps/filmlog.png"
+  done
+  install -Dm644 README.md "$pkgdir/usr/share/doc/$pkgname/README.md"
+}

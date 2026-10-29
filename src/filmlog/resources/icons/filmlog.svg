@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2b2d31"/>
+      <stop offset="1" stop-color="#16171a"/>
+    </linearGradient>
+    <radialGradient id="safelight" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ff5a4a"/>
+      <stop offset="1" stop-color="#b3150b"/>
+    </radialGradient>
+  </defs>
+  <rect x="8" y="8" width="240" height="240" rx="44" fill="url(#bg)"/>
+  <!-- film strip -->
+  <g transform="rotate(-12 128 140)">
+    <rect x="22" y="96" width="212" height="96" rx="6" fill="#e9e4d8"/>
+    <g fill="#16171a">
+      <rect x="32" y="102" width="12" height="10" rx="2"/>
+      <rect x="56" y="102" width="12" height="10" rx="2"/>
+      <rect x="80" y="102" width="12" height="10" rx="2"/>
+      <rect x="104" y="102" width="12" height="10" rx="2"/>
+      <rect x="128" y="102" width="12" height="10" rx="2"/>
+      <rect x="152" y="102" width="12" height="10" rx="2"/>
+      <rect x="176" y="102" width="12" height="10" rx="2"/>
+      <rect x="200" y="102" width="12" height="10" rx="2"/>
+      <rect x="32" y="176" width="12" height="10" rx="2"/>
+      <rect x="56" y="176" width="12" height="10" rx="2"/>
+      <rect x="80" y="176" width="12" height="10" rx="2"/>
+      <rect x="104" y="176" width="12" height="10" rx="2"/>
+      <rect x="128" y="176" width="12" height="10" rx="2"/>
+      <rect x="152" y="176" width="12" height="10" rx="2"/>
+      <rect x="176" y="176" width="12" height="10" rx="2"/>
+      <rect x="200" y="176" width="12" height="10" rx="2"/>
+    </g>
+    <rect x="34" y="118" width="84" height="52" rx="3" fill="#3a3c41"/>
+    <rect x="128" y="118" width="84" height="52" rx="3" fill="#5b5e64"/>
+    <path d="M40 162 L64 136 L80 150 L96 130 L112 162 Z" fill="#9aa0a8"/>
+    <circle cx="170" cy="138" r="9" fill="#c9ccd1"/>
+  </g>
+  <!-- safelight -->
+  <circle cx="196" cy="58" r="22" fill="url(#safelight)"/>
+  <circle cx="196" cy="58" r="30" fill="none" stroke="#ff5a4a" stroke-opacity="0.35" stroke-width="4"/>
+</svg>

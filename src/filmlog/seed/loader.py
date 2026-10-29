@@ -46,7 +46,7 @@ def get_or_create_manufacturer(
 
 def load_catalogue(session: Session, data: dict[str, Any] | None = None) -> dict[str, int]:
     """Insert the catalogue seed. Existing entries (same natural key) are skipped."""
-    data = data or read_seed("catalogue.json")
+    data = read_seed("catalogue.json") if data is None else data
     counts = {"manufacturers": 0, "film_stocks": 0, "chemicals": 0, "papers": 0, "presets": 0}
 
     for m in data.get("manufacturers", []):

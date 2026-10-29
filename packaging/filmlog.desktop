@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=FilmLog
+GenericName=Darkroom Film & Print Manager
+Comment=Catalogue cameras, film rolls, development and darkroom prints
+Exec=filmlog
+Icon=filmlog
+Terminal=false
+Categories=Graphics;Photography;Qt;
+Keywords=film;darkroom;analog;photography;negative;print;developer;
+StartupWMClass=filmlog

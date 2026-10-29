@@ -125,3 +125,39 @@ each phase.
   image light appears under the safelight.
 - Roll **Images tab**: contact sheet (single slot) + any number of extra scans
   (drag & drop) + read-only thumbnails of the roll's print images.
+
+## Phase 6 — Extras & packaging
+
+- **JSON export format** (`format: filmlog-export`, `version: 1`) references
+  catalogue entries by natural keys (manufacturer + name [+ kind / surface]),
+  cameras by an in-file key, and nests development, prints and exposures under
+  each roll. The catalogue is included and merged on import (missing entries
+  are created). Images are referenced by file name only; the files themselves
+  are not exported.
+- **Import** merges by roll code. On a conflict the user picks Skip / Replace
+  (or Skip all / Replace all). Cameras are matched by make + model + nickname +
+  serial. A rotated automatic backup is taken before every import. Imported
+  records are never flagged as demo.
+- **CSV export**: one CSV per table (including link tables), ids first so rows
+  can be joined, zipped.
+- **Demo data** lives in `seed/demo.json` in the export format and is loaded
+  through the importer with `is_demo = true`. Roll codes already in use are
+  skipped. *Remove demo data* deletes demo rolls (with their development,
+  prints and images) and demo cameras — except demo cameras the user has since
+  used for their own rolls, which are kept and unflagged.
+- Demo roll 2026-007 (HP5+ @ 1600 in Microphen) has development time `0:00`
+  and the note "check Ilford push chart"; the form requires a real time
+  before it can be saved again.
+- Demo prints: Washaid has no dedicated print field, so it is recorded in the
+  print's notes. Demo enlarger "Durst M605 / Rodagon 50mm" is illustrative.
+- **Darkroom card** HTML is built in the services layer (no Qt) and rendered
+  to A4 PDF with `QTextDocument` + `QPrinter`. `Ctrl+P` exports the roll
+  selected in the Rolls view.
+- **Statistics** use QtCharts when available and fall back to plain tables
+  (Arch's `pyside6` needs `qt6-charts` installed for QtCharts).
+- **Packaging**: `.desktop` file, SVG icon + rendered hicolor PNGs
+  (`packaging/icons/render_pngs.py`), Arch `PKGBUILD` building from the local
+  git checkout (branch `main` by default, `FILMLOG_REF=tag=vX.Y.Z` for a tag),
+  and an untested Flatpak manifest skeleton.
+- **No licence chosen yet**: `pyproject.toml` has no licence field and the
+  PKGBUILD says `unknown` — to be decided by the author.

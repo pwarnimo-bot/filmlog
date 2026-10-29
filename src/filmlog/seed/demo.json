@@ -1,0 +1,897 @@
+{
+  "format": "filmlog-export",
+  "version": 1,
+  "catalogue": {},
+  "cameras": [
+    {
+      "key": "nikon-fm2",
+      "make": "Nikon",
+      "model": "FM2",
+      "nickname": "",
+      "camera_type": "slr",
+      "format": "135",
+      "lens_mount": "Nikon F",
+      "lenses": "Nikkor 50mm f/1.8 AI-S\nNikkor 28mm f/2.8 AI-S",
+      "serial_number": "",
+      "year_made": null,
+      "shutter": "Mechanical, 1 s–1/4000 s, B",
+      "metering": "TTL centre-weighted",
+      "battery": "2× SR44",
+      "acquired_date": null,
+      "acquired_price": null,
+      "status": "active",
+      "photo": null,
+      "notes": "Demo camera"
+    },
+    {
+      "key": "pentax-k1000",
+      "make": "Pentax",
+      "model": "K1000",
+      "nickname": "",
+      "camera_type": "slr",
+      "format": "135",
+      "lens_mount": "Pentax K",
+      "lenses": "SMC Pentax-M 50mm f/2",
+      "serial_number": "",
+      "year_made": null,
+      "shutter": "Mechanical, 1 s–1/1000 s, B",
+      "metering": "TTL needle meter",
+      "battery": "1× SR44",
+      "acquired_date": null,
+      "acquired_price": null,
+      "status": "active",
+      "photo": null,
+      "notes": "Demo camera"
+    },
+    {
+      "key": "leica-m6",
+      "make": "Leica",
+      "model": "M6",
+      "nickname": "",
+      "camera_type": "rangefinder",
+      "format": "135",
+      "lens_mount": "Leica M",
+      "lenses": "Summicron 35mm f/2\nSummicron 50mm f/2",
+      "serial_number": "",
+      "year_made": null,
+      "shutter": "Mechanical, 1 s–1/1000 s, B",
+      "metering": "TTL spot-ish",
+      "battery": "2× SR44",
+      "acquired_date": null,
+      "acquired_price": null,
+      "status": "active",
+      "photo": null,
+      "notes": "Demo camera"
+    },
+    {
+      "key": "olympus-om1",
+      "make": "Olympus",
+      "model": "OM-1",
+      "nickname": "",
+      "camera_type": "slr",
+      "format": "135",
+      "lens_mount": "Olympus OM",
+      "lenses": "Zuiko 50mm f/1.8",
+      "serial_number": "",
+      "year_made": null,
+      "shutter": "Mechanical, 1 s–1/1000 s, B",
+      "metering": "TTL (mercury battery)",
+      "battery": "PX625 (mercury, use adapter)",
+      "acquired_date": null,
+      "acquired_price": null,
+      "status": "active",
+      "photo": null,
+      "notes": "Demo camera"
+    },
+    {
+      "key": "mamiya-rb67",
+      "make": "Mamiya",
+      "model": "RB67 Pro S",
+      "nickname": "",
+      "camera_type": "mf_slr",
+      "format": "120 6x7",
+      "lens_mount": "Mamiya RB",
+      "lenses": "Sekor C 90mm f/3.8",
+      "serial_number": "",
+      "year_made": null,
+      "shutter": "Leaf shutter in lens, 1 s–1/400 s",
+      "metering": "none",
+      "battery": "none",
+      "acquired_date": null,
+      "acquired_price": null,
+      "status": "active",
+      "photo": null,
+      "notes": "Demo camera"
+    },
+    {
+      "key": "hasselblad-500cm",
+      "make": "Hasselblad",
+      "model": "500C/M",
+      "nickname": "",
+      "camera_type": "mf_slr",
+      "format": "120 6x6",
+      "lens_mount": "Hasselblad V",
+      "lenses": "Planar 80mm f/2.8 C",
+      "serial_number": "",
+      "year_made": null,
+      "shutter": "Leaf shutter in lens, 1 s–1/500 s",
+      "metering": "none",
+      "battery": "none",
+      "acquired_date": null,
+      "acquired_price": null,
+      "status": "active",
+      "photo": null,
+      "notes": "Demo camera"
+    },
+    {
+      "key": "rolleiflex-28f",
+      "make": "Rolleiflex",
+      "model": "2.8F",
+      "nickname": "",
+      "camera_type": "tlr",
+      "format": "120 6x6",
+      "lens_mount": "Fixed Planar 80 mm f/2.8",
+      "lenses": "Planar 80mm f/2.8 (fixed)",
+      "serial_number": "",
+      "year_made": null,
+      "shutter": "Synchro-Compur 1 s–1/500 s",
+      "metering": "Coupled selenium meter",
+      "battery": "none",
+      "acquired_date": null,
+      "acquired_price": null,
+      "status": "active",
+      "photo": null,
+      "notes": "Demo camera"
+    }
+  ],
+  "rolls": [
+    {
+      "code": "2026-001",
+      "title": "Moselle walk",
+      "film_stock": {
+        "manufacturer": "Ilford",
+        "name": "FP4 Plus"
+      },
+      "format": "135",
+      "exposures": 36,
+      "shot_iso": 125,
+      "push_pull_stops": 0.0,
+      "camera": "nikon-fm2",
+      "lens": "",
+      "film_expiry": null,
+      "date_loaded": "2026-01-04",
+      "date_finished": "2026-01-18",
+      "subject_location": "Moselle river, Remich",
+      "status": "developed",
+      "contact_sheet_image": null,
+      "notes": "",
+      "tags": [
+        "landscape",
+        "walk"
+      ],
+      "images": [],
+      "development": {
+        "date_developed": "2026-01-20",
+        "developer": {
+          "manufacturer": "Ilford",
+          "name": "ID-11",
+          "kind": "film_developer"
+        },
+        "dilution": "stock",
+        "temperature_c": 20.0,
+        "dev_time_s": 510,
+        "agitation": "Ilford: 4 inversions in first 10 s, then 4 inversions each minute",
+        "presoak_s": null,
+        "stop_chemical": {
+          "manufacturer": "Ilford",
+          "name": "Ilfostop",
+          "kind": "stop_bath"
+        },
+        "stop_time_s": 10,
+        "rinse_time_s": null,
+        "fixer": {
+          "manufacturer": "Ilford",
+          "name": "Rapid Fixer",
+          "kind": "fixer"
+        },
+        "fixer_dilution": "1+4",
+        "fix_time_s": 240,
+        "wash_time_s": 600,
+        "wash_method": "Ilford method 5/10/20 inversions",
+        "wetting_agent": {
+          "manufacturer": "Ilford",
+          "name": "Ilfotol",
+          "kind": "wetting_agent"
+        },
+        "wetting_time_s": 60,
+        "tank": "Paterson Super System 4",
+        "result_rating": 4,
+        "notes": "",
+        "developed_with": []
+      },
+      "prints": [
+        {
+          "frame": "14",
+          "title": "Bridge at dusk",
+          "date_printed": "2026-02-07",
+          "paper": {
+            "manufacturer": "Ilford",
+            "name": "Multigrade RC Deluxe",
+            "surface": "glossy"
+          },
+          "paper_size": "18×24 cm",
+          "enlarger": "Durst M605",
+          "enlarging_lens": "Rodagon 50mm f/2.8",
+          "aperture": "f/8",
+          "head_height_cm": null,
+          "contrast_method": "single_filter",
+          "developer": {
+            "manufacturer": "Ilford",
+            "name": "Multigrade",
+            "kind": "paper_developer"
+          },
+          "dev_dilution": "1+9",
+          "dev_time_s": 60,
+          "dev_temperature_c": 20.0,
+          "stop_chemical": {
+            "manufacturer": "Ilford",
+            "name": "Ilfostop",
+            "kind": "stop_bath"
+          },
+          "stop_time_s": 10,
+          "fixer": {
+            "manufacturer": "Ilford",
+            "name": "Rapid Fixer",
+            "kind": "fixer"
+          },
+          "fixer_dilution": "1+4",
+          "fix_time_s": 30,
+          "wash_time_s": 120,
+          "toning": "",
+          "is_final": false,
+          "rating": 3,
+          "image": null,
+          "notes": "Work print — sky too light",
+          "exposures": [
+            {
+              "position": 0,
+              "filter_grade": "2½",
+              "seconds": 14,
+              "aperture": "f/8",
+              "purpose": "base",
+              "note": ""
+            }
+          ]
+        },
+        {
+          "frame": "14",
+          "title": "Bridge at dusk",
+          "date_printed": "2026-02-07",
+          "paper": {
+            "manufacturer": "Ilford",
+            "name": "Multigrade RC Deluxe",
+            "surface": "glossy"
+          },
+          "paper_size": "18×24 cm",
+          "enlarger": "Durst M605",
+          "enlarging_lens": "Rodagon 50mm f/2.8",
+          "aperture": "f/8",
+          "head_height_cm": null,
+          "contrast_method": "split_grade",
+          "developer": {
+            "manufacturer": "Ilford",
+            "name": "Multigrade",
+            "kind": "paper_developer"
+          },
+          "dev_dilution": "1+9",
+          "dev_time_s": 60,
+          "dev_temperature_c": 20.0,
+          "stop_chemical": {
+            "manufacturer": "Ilford",
+            "name": "Ilfostop",
+            "kind": "stop_bath"
+          },
+          "stop_time_s": 10,
+          "fixer": {
+            "manufacturer": "Ilford",
+            "name": "Rapid Fixer",
+            "kind": "fixer"
+          },
+          "fixer_dilution": "1+4",
+          "fix_time_s": 30,
+          "wash_time_s": 120,
+          "toning": "",
+          "is_final": true,
+          "rating": 5,
+          "image": null,
+          "notes": "",
+          "exposures": [
+            {
+              "position": 0,
+              "filter_grade": "00",
+              "seconds": 9,
+              "aperture": "f/8",
+              "purpose": "soft",
+              "note": ""
+            },
+            {
+              "position": 1,
+              "filter_grade": "5",
+              "seconds": 7,
+              "aperture": "f/8",
+              "purpose": "hard",
+              "note": ""
+            },
+            {
+              "position": 2,
+              "filter_grade": "5",
+              "seconds": 4,
+              "aperture": "",
+              "purpose": "burn",
+              "note": "burn sky +4 s grade 5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "2026-002",
+      "title": "Vineyards",
+      "film_stock": {
+        "manufacturer": "Ilford",
+        "name": "FP4 Plus"
+      },
+      "format": "120 6x7",
+      "exposures": 10,
+      "shot_iso": 125,
+      "push_pull_stops": 0.0,
+      "camera": "mamiya-rb67",
+      "lens": "",
+      "film_expiry": null,
+      "date_loaded": "2026-01-10",
+      "date_finished": "2026-02-01",
+      "subject_location": "Wormeldange vineyards",
+      "status": "developed",
+      "contact_sheet_image": null,
+      "notes": "",
+      "tags": [
+        "landscape"
+      ],
+      "images": [],
+      "development": {
+        "date_developed": "2026-02-03",
+        "developer": {
+          "manufacturer": "Ilford",
+          "name": "ID-11",
+          "kind": "film_developer"
+        },
+        "dilution": "1+1",
+        "temperature_c": 20.0,
+        "dev_time_s": 660,
+        "agitation": "Ilford: 4 inversions in first 10 s, then 4 inversions each minute",
+        "presoak_s": null,
+        "stop_chemical": {
+          "manufacturer": "Ilford",
+          "name": "Ilfostop",
+          "kind": "stop_bath"
+        },
+        "stop_time_s": 10,
+        "rinse_time_s": null,
+        "fixer": {
+          "manufacturer": "Ilford",
+          "name": "Rapid Fixer",
+          "kind": "fixer"
+        },
+        "fixer_dilution": "1+4",
+        "fix_time_s": 240,
+        "wash_time_s": 600,
+        "wash_method": "Ilford method 5/10/20 inversions",
+        "wetting_agent": {
+          "manufacturer": "Ilford",
+          "name": "Ilfotol",
+          "kind": "wetting_agent"
+        },
+        "wetting_time_s": 60,
+        "tank": "Paterson Super System 4",
+        "result_rating": 4,
+        "notes": "",
+        "developed_with": []
+      },
+      "prints": []
+    },
+    {
+      "code": "2026-003",
+      "title": "Market day",
+      "film_stock": {
+        "manufacturer": "Ilford",
+        "name": "HP5 Plus"
+      },
+      "format": "135",
+      "exposures": 36,
+      "shot_iso": 400,
+      "push_pull_stops": 0.0,
+      "camera": "leica-m6",
+      "lens": "",
+      "film_expiry": null,
+      "date_loaded": "2026-02-08",
+      "date_finished": "2026-02-22",
+      "subject_location": "Luxembourg city market",
+      "status": "developed",
+      "contact_sheet_image": null,
+      "notes": "",
+      "tags": [
+        "street"
+      ],
+      "images": [],
+      "development": {
+        "date_developed": "2026-02-24",
+        "developer": {
+          "manufacturer": "Ilford",
+          "name": "ID-11",
+          "kind": "film_developer"
+        },
+        "dilution": "stock",
+        "temperature_c": 20.0,
+        "dev_time_s": 450,
+        "agitation": "Ilford: 4 inversions in first 10 s, then 4 inversions each minute",
+        "presoak_s": null,
+        "stop_chemical": {
+          "manufacturer": "Ilford",
+          "name": "Ilfostop",
+          "kind": "stop_bath"
+        },
+        "stop_time_s": 10,
+        "rinse_time_s": null,
+        "fixer": {
+          "manufacturer": "Ilford",
+          "name": "Rapid Fixer",
+          "kind": "fixer"
+        },
+        "fixer_dilution": "1+4",
+        "fix_time_s": 240,
+        "wash_time_s": 600,
+        "wash_method": "Ilford method 5/10/20 inversions",
+        "wetting_agent": {
+          "manufacturer": "Ilford",
+          "name": "Ilfotol",
+          "kind": "wetting_agent"
+        },
+        "wetting_time_s": 60,
+        "tank": "Paterson Super System 4",
+        "result_rating": 3,
+        "notes": "",
+        "developed_with": []
+      },
+      "prints": []
+    },
+    {
+      "code": "2026-004",
+      "title": "Grandma's 90th",
+      "film_stock": {
+        "manufacturer": "Ilford",
+        "name": "HP5 Plus"
+      },
+      "format": "120 6x6",
+      "exposures": 12,
+      "shot_iso": 400,
+      "push_pull_stops": 0.0,
+      "camera": "rolleiflex-28f",
+      "lens": "",
+      "film_expiry": null,
+      "date_loaded": "2026-03-01",
+      "date_finished": "2026-03-01",
+      "subject_location": "Family party",
+      "status": "developed",
+      "contact_sheet_image": null,
+      "notes": "",
+      "tags": [
+        "family"
+      ],
+      "images": [],
+      "development": {
+        "date_developed": "2026-03-03",
+        "developer": {
+          "manufacturer": "Ilford",
+          "name": "ID-11",
+          "kind": "film_developer"
+        },
+        "dilution": "1+1",
+        "temperature_c": 20.0,
+        "dev_time_s": 780,
+        "agitation": "Ilford: 4 inversions in first 10 s, then 4 inversions each minute",
+        "presoak_s": null,
+        "stop_chemical": {
+          "manufacturer": "Ilford",
+          "name": "Ilfostop",
+          "kind": "stop_bath"
+        },
+        "stop_time_s": 10,
+        "rinse_time_s": null,
+        "fixer": {
+          "manufacturer": "Ilford",
+          "name": "Rapid Fixer",
+          "kind": "fixer"
+        },
+        "fixer_dilution": "1+4",
+        "fix_time_s": 240,
+        "wash_time_s": 600,
+        "wash_method": "Ilford method 5/10/20 inversions",
+        "wetting_agent": {
+          "manufacturer": "Ilford",
+          "name": "Ilfotol",
+          "kind": "wetting_agent"
+        },
+        "wetting_time_s": 60,
+        "tank": "Paterson Super System 4",
+        "result_rating": 5,
+        "notes": "",
+        "developed_with": []
+      },
+      "prints": [
+        {
+          "frame": "7",
+          "title": "Grandma laughing",
+          "date_printed": "2026-03-14",
+          "paper": {
+            "manufacturer": "Ilford",
+            "name": "Multigrade FB Classic",
+            "surface": "glossy"
+          },
+          "paper_size": "24×30 cm",
+          "enlarger": "Durst M605",
+          "enlarging_lens": "Rodagon 50mm f/2.8",
+          "aperture": "",
+          "head_height_cm": null,
+          "contrast_method": "split_grade",
+          "developer": {
+            "manufacturer": "Ilford",
+            "name": "Multigrade",
+            "kind": "paper_developer"
+          },
+          "dev_dilution": "1+9",
+          "dev_time_s": 120,
+          "dev_temperature_c": 20.0,
+          "stop_chemical": {
+            "manufacturer": "Ilford",
+            "name": "Ilfostop",
+            "kind": "stop_bath"
+          },
+          "stop_time_s": 10,
+          "fixer": {
+            "manufacturer": "Ilford",
+            "name": "Rapid Fixer",
+            "kind": "fixer"
+          },
+          "fixer_dilution": "1+4",
+          "fix_time_s": 60,
+          "wash_time_s": 1800,
+          "toning": "Selenium 1+19, 4 min",
+          "is_final": true,
+          "rating": 5,
+          "image": null,
+          "notes": "Washaid 1+4 before the final wash",
+          "exposures": [
+            {
+              "position": 0,
+              "filter_grade": "00",
+              "seconds": 12,
+              "aperture": "",
+              "purpose": "soft",
+              "note": ""
+            },
+            {
+              "position": 1,
+              "filter_grade": "5",
+              "seconds": 10,
+              "aperture": "",
+              "purpose": "hard",
+              "note": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "2026-005",
+      "title": "Old town",
+      "film_stock": {
+        "manufacturer": "Kodak",
+        "name": "Tri-X 400"
+      },
+      "format": "135",
+      "exposures": 36,
+      "shot_iso": 400,
+      "push_pull_stops": 0.0,
+      "camera": "pentax-k1000",
+      "lens": "",
+      "film_expiry": null,
+      "date_loaded": "2026-03-10",
+      "date_finished": "2026-03-28",
+      "subject_location": "Old town",
+      "status": "developed",
+      "contact_sheet_image": null,
+      "notes": "",
+      "tags": [
+        "street"
+      ],
+      "images": [],
+      "development": {
+        "date_developed": "2026-03-30",
+        "developer": {
+          "manufacturer": "Kodak",
+          "name": "D-76",
+          "kind": "film_developer"
+        },
+        "dilution": "stock",
+        "temperature_c": 20.0,
+        "dev_time_s": 405,
+        "agitation": "Kodak: 5–7 inversions in first 30 s, then 5 s every 30 s",
+        "presoak_s": null,
+        "stop_chemical": {
+          "manufacturer": "Ilford",
+          "name": "Ilfostop",
+          "kind": "stop_bath"
+        },
+        "stop_time_s": 10,
+        "rinse_time_s": null,
+        "fixer": {
+          "manufacturer": "Ilford",
+          "name": "Rapid Fixer",
+          "kind": "fixer"
+        },
+        "fixer_dilution": "1+4",
+        "fix_time_s": 240,
+        "wash_time_s": 600,
+        "wash_method": "Running water",
+        "wetting_agent": {
+          "manufacturer": "Ilford",
+          "name": "Ilfotol",
+          "kind": "wetting_agent"
+        },
+        "wetting_time_s": 60,
+        "tank": "Paterson Super System 4",
+        "result_rating": 4,
+        "notes": "",
+        "developed_with": []
+      },
+      "prints": []
+    },
+    {
+      "code": "2026-006",
+      "title": "Station",
+      "film_stock": {
+        "manufacturer": "Kodak",
+        "name": "Tri-X 400"
+      },
+      "format": "135",
+      "exposures": 36,
+      "shot_iso": 400,
+      "push_pull_stops": 0.0,
+      "camera": "nikon-fm2",
+      "lens": "",
+      "film_expiry": null,
+      "date_loaded": "2026-04-02",
+      "date_finished": "2026-04-20",
+      "subject_location": "Central station",
+      "status": "developed",
+      "contact_sheet_image": null,
+      "notes": "",
+      "tags": [
+        "street"
+      ],
+      "images": [],
+      "development": {
+        "date_developed": "2026-04-21",
+        "developer": {
+          "manufacturer": "Kodak",
+          "name": "D-76",
+          "kind": "film_developer"
+        },
+        "dilution": "1+1",
+        "temperature_c": 20.0,
+        "dev_time_s": 585,
+        "agitation": "Kodak: 5–7 inversions in first 30 s, then 5 s every 30 s",
+        "presoak_s": null,
+        "stop_chemical": {
+          "manufacturer": null,
+          "name": "Water",
+          "kind": "stop_bath"
+        },
+        "stop_time_s": 30,
+        "rinse_time_s": 30,
+        "fixer": {
+          "manufacturer": "Ilford",
+          "name": "Rapid Fixer",
+          "kind": "fixer"
+        },
+        "fixer_dilution": "1+4",
+        "fix_time_s": 300,
+        "wash_time_s": 600,
+        "wash_method": "Running water",
+        "wetting_agent": {
+          "manufacturer": "Ilford",
+          "name": "Ilfotol",
+          "kind": "wetting_agent"
+        },
+        "wetting_time_s": 60,
+        "tank": "Paterson Super System 4",
+        "result_rating": 4,
+        "notes": "",
+        "developed_with": []
+      },
+      "prints": [
+        {
+          "frame": "22",
+          "title": "Platform 3",
+          "date_printed": "2026-05-02",
+          "paper": {
+            "manufacturer": "Foma",
+            "name": "Fomaspeed Variant III",
+            "surface": "glossy"
+          },
+          "paper_size": "13×18 cm",
+          "enlarger": "Durst M605",
+          "enlarging_lens": "Rodagon 50mm f/2.8",
+          "aperture": "",
+          "head_height_cm": null,
+          "contrast_method": "single_filter",
+          "developer": {
+            "manufacturer": "Ilford",
+            "name": "Multigrade",
+            "kind": "paper_developer"
+          },
+          "dev_dilution": "1+14",
+          "dev_time_s": 90,
+          "dev_temperature_c": 20.0,
+          "stop_chemical": {
+            "manufacturer": "Ilford",
+            "name": "Ilfostop",
+            "kind": "stop_bath"
+          },
+          "stop_time_s": 10,
+          "fixer": {
+            "manufacturer": "Ilford",
+            "name": "Rapid Fixer",
+            "kind": "fixer"
+          },
+          "fixer_dilution": "1+4",
+          "fix_time_s": 30,
+          "wash_time_s": 120,
+          "toning": "",
+          "is_final": false,
+          "rating": 4,
+          "image": null,
+          "notes": "",
+          "exposures": [
+            {
+              "position": 0,
+              "filter_grade": "3",
+              "seconds": 10,
+              "aperture": "",
+              "purpose": "base",
+              "note": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "2026-007",
+      "title": "Night lights",
+      "film_stock": {
+        "manufacturer": "Ilford",
+        "name": "HP5 Plus"
+      },
+      "format": "135",
+      "exposures": 36,
+      "shot_iso": 1600,
+      "push_pull_stops": 2.0,
+      "camera": "leica-m6",
+      "lens": "",
+      "film_expiry": null,
+      "date_loaded": "2026-05-01",
+      "date_finished": "2026-05-09",
+      "subject_location": "City at night",
+      "status": "developed",
+      "contact_sheet_image": null,
+      "notes": "",
+      "tags": [
+        "night",
+        "push"
+      ],
+      "images": [],
+      "development": {
+        "date_developed": "2026-05-10",
+        "developer": {
+          "manufacturer": "Ilford",
+          "name": "Microphen",
+          "kind": "film_developer"
+        },
+        "dilution": "stock",
+        "temperature_c": 20.0,
+        "dev_time_s": 0,
+        "agitation": "Ilford: 4 inversions in first 10 s, then 4 inversions each minute",
+        "presoak_s": null,
+        "stop_chemical": {
+          "manufacturer": "Ilford",
+          "name": "Ilfostop",
+          "kind": "stop_bath"
+        },
+        "stop_time_s": 10,
+        "rinse_time_s": null,
+        "fixer": {
+          "manufacturer": "Ilford",
+          "name": "Rapid Fixer",
+          "kind": "fixer"
+        },
+        "fixer_dilution": "1+4",
+        "fix_time_s": 240,
+        "wash_time_s": 600,
+        "wash_method": "Ilford method 5/10/20 inversions",
+        "wetting_agent": {
+          "manufacturer": "Ilford",
+          "name": "Ilfotol",
+          "kind": "wetting_agent"
+        },
+        "wetting_time_s": 60,
+        "tank": "Paterson Super System 4",
+        "result_rating": null,
+        "notes": "Time to fill in — check Ilford push chart for HP5 Plus @ 1600 in Microphen.",
+        "developed_with": []
+      },
+      "prints": []
+    },
+    {
+      "code": "2026-008",
+      "title": "Spring test",
+      "film_stock": {
+        "manufacturer": "Foma",
+        "name": "Fomapan 100 Classic"
+      },
+      "format": "135",
+      "exposures": 36,
+      "shot_iso": 100,
+      "push_pull_stops": 0.0,
+      "camera": "olympus-om1",
+      "lens": "",
+      "film_expiry": null,
+      "date_loaded": "2026-05-12",
+      "date_finished": "2026-06-01",
+      "subject_location": "Garden",
+      "status": "exposed",
+      "contact_sheet_image": null,
+      "notes": "",
+      "tags": [
+        "test roll"
+      ],
+      "images": [],
+      "development": null,
+      "prints": []
+    },
+    {
+      "code": "2026-009",
+      "title": "",
+      "film_stock": {
+        "manufacturer": "Kodak",
+        "name": "Ektapan 400"
+      },
+      "format": "120 6x6",
+      "exposures": 12,
+      "shot_iso": 400,
+      "push_pull_stops": 0.0,
+      "camera": "hasselblad-500cm",
+      "lens": "",
+      "film_expiry": null,
+      "date_loaded": "2026-06-05",
+      "date_finished": null,
+      "subject_location": "",
+      "status": "loaded",
+      "contact_sheet_image": null,
+      "notes": "",
+      "tags": [],
+      "images": [],
+      "development": null,
+      "prints": []
+    }
+  ]
+}

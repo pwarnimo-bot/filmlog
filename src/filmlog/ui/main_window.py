@@ -9,17 +9,16 @@ from PySide6.QtGui import QAction, QCloseEvent, QKeySequence
 from PySide6.QtWidgets import (
     QApplication,
     QHBoxLayout,
-    QLabel,
     QListWidget,
     QListWidgetItem,
     QMainWindow,
     QMessageBox,
     QStackedWidget,
-    QVBoxLayout,
     QWidget,
 )
 
 from filmlog import __version__
+from filmlog.ui import file_actions as fa
 from filmlog.ui.base_view import BaseView
 from filmlog.ui.cameras_view import CamerasView
 from filmlog.ui.catalogue_view import CatalogueView
@@ -27,18 +26,8 @@ from filmlog.ui.context import AppContext
 from filmlog.ui.prints_view import PrintsView
 from filmlog.ui.rolls_view import RollsView
 from filmlog.ui.settings_dialog import SettingsDialog
+from filmlog.ui.statistics_view import StatisticsView
 from filmlog.ui.theme import apply_theme
-
-
-class PlaceholderView(BaseView):
-    def __init__(self, title: str, parent: QWidget | None = None) -> None:
-        super().__init__(parent)
-        self.title = title
-        layout = QVBoxLayout(self)
-        label = QLabel(title)
-        label.setProperty("role", "page-title")
-        layout.addWidget(label)
-        layout.addStretch(1)
 
 
 class MainWindow(QMainWindow):
@@ -78,7 +67,7 @@ class MainWindow(QMainWindow):
             self._prints_view(),
             self._cameras_view(),
             CatalogueView(self.ctx),
-            PlaceholderView(self.tr("Statistics")),
+            StatisticsView(self.ctx),
         ]
 
     def _prints_view(self) -> BaseView:
@@ -139,15 +128,30 @@ class MainWindow(QMainWindow):
         prefs.triggered.connect(self.open_settings)
         self.edit_menu.addAction(prefs)
 
+        fm = self.file_menu
+        fm.addAction(self.tr("Export to &CSV (zip)…"), lambda: fa.export_csv(self, self.ctx))
+        fm.addAction(self.tr("Export to &JSON…"), lambda: fa.export_full_json(self, self.ctx))
+        fm.addAction(self.tr("&Import JSON…"), self._import_json)
+        fm.addSeparator()
+        card = QAction(self.tr("Export roll as darkroom card (&PDF)…"), self)
+        card.setShortcut(QKeySequence("Ctrl+P"))
+        card.triggered.connect(self._export_card)
+        fm.addAction(card)
+        fm.addSeparator()
+        fm.addAction(self.tr("&Back up database now…"), lambda: fa.backup_now(self, self.ctx))
+        fm.addSeparator()
         quit_ = QAction(self.tr("&Quit"), self)
         quit_.setShortcut(QKeySequence.StandardKey.Quit)
         quit_.triggered.connect(self.close)
-        self._quit_action = quit_
-        self.file_menu.addAction(quit_)
+        fm.addAction(quit_)
 
+        hm = self.help_menu
+        hm.addAction(self.tr("Load &demo data"), self._load_demo)
+        hm.addAction(self.tr("&Remove demo data"), self._remove_demo)
+        hm.addSeparator()
         about = QAction(self.tr("&About FilmLog"), self)
         about.triggered.connect(self._about)
-        self.help_menu.addAction(about)
+        hm.addAction(about)
 
         # Ctrl+1..5 jump to sidebar entries.
         for i in range(len(self.views)):
@@ -155,6 +159,27 @@ class MainWindow(QMainWindow):
             act.setShortcut(QKeySequence(f"Ctrl+{i + 1}"))
             act.triggered.connect(lambda _=False, i=i: self.show_view(i))
             self.addAction(act)
+
+    def refresh_all(self) -> None:
+        for v in self.views:
+            v.refresh()
+
+    def _import_json(self) -> None:
+        if fa.import_full_json(self, self.ctx):
+            self.refresh_all()
+
+    def _load_demo(self) -> None:
+        if fa.load_demo(self, self.ctx):
+            self.refresh_all()
+
+    def _remove_demo(self) -> None:
+        if fa.remove_demo(self, self.ctx):
+            self.refresh_all()
+
+    def _export_card(self) -> None:
+        view = self.views[0]
+        roll = view.panel.current_roll() if isinstance(view, RollsView) else None
+        fa.export_card(self, self.ctx, roll)
 
     def open_settings(self) -> None:
         dlg = SettingsDialog(self.ctx.settings, self)

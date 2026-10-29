@@ -1,0 +1,37 @@
+# Starting point for a Flatpak build (untested). The app id is a placeholder:
+# replace it with a reverse-DNS name you control before publishing.
+#
+#   flatpak-builder --user --install build-dir packaging/flatpak/io.github.filmlog.FilmLog.yml
+#
+# Python dependencies must be vendored as sources because Flatpak builds run
+# offline: generate python3-deps.json with flatpak-pip-generator, e.g.
+#   flatpak-pip-generator --runtime org.kde.Sdk//6.8 sqlalchemy alembic platformdirs
+app-id: io.github.filmlog.FilmLog
+runtime: org.kde.Platform
+runtime-version: "6.8"
+sdk: org.kde.Sdk
+base: io.qt.PySide.BaseApp
+base-version: "6.8"
+command: filmlog
+finish-args:
+  - --share=ipc
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --device=dri
+  # Read images the user drags in / picks (the portal also works without this).
+  - --filesystem=xdg-pictures:ro
+  - --env=QT_QPA_PLATFORM=wayland;xcb
+cleanup-commands:
+  - /app/cleanup-BaseApp.sh
+modules:
+  - python3-deps.json
+  - name: filmlog
+    buildsystem: simple
+    build-commands:
+      - pip3 install --no-deps --no-build-isolation --prefix=/app .
+      - install -Dm644 packaging/filmlog.desktop /app/share/applications/io.github.filmlog.FilmLog.desktop
+      - desktop-file-edit --set-icon=io.github.filmlog.FilmLog /app/share/applications/io.github.filmlog.FilmLog.desktop
+      - install -Dm644 packaging/icons/hicolor/scalable/apps/filmlog.svg /app/share/icons/hicolor/scalable/apps/io.github.filmlog.FilmLog.svg
+    sources:
+      - type: dir
+        path: ../..

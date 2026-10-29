@@ -237,10 +237,10 @@ class PrintsTab(QWidget):
             return
         image = p.image
         s = self.ctx.session
-        if self.roll is not None and p in self.roll.prints:
-            self.roll.prints.remove(p)
         s.delete(p)
         s.commit()
+        if self.roll is not None:
+            s.expire(self.roll, ["prints"])
         delete_unreferenced(s, [image])
         self.reload()
         self.changed.emit()

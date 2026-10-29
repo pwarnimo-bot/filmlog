@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import sys
+from importlib import resources
 
+from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
 
 from filmlog import paths
@@ -21,7 +23,15 @@ def create_app(argv: list[str] | None = None) -> QApplication:
     app.setApplicationName("FilmLog")
     app.setOrganizationName("filmlog")
     app.setDesktopFileName("filmlog")
+    app.setWindowIcon(app_icon())
     return app
+
+
+def app_icon() -> QIcon:
+    icon = QIcon.fromTheme("filmlog")
+    if icon.isNull():
+        icon = QIcon(str(resources.files("filmlog.resources") / "icons" / "filmlog.svg"))
+    return icon
 
 
 def build_main_window(app: QApplication) -> MainWindow:

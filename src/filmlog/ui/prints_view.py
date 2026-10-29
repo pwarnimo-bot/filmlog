@@ -136,12 +136,14 @@ class PrintsPanel(ListDetailPanel):
 
     def before_delete(self, obj: Any) -> None:
         self._pending_image = obj.image
-        if obj in obj.roll.prints:
-            obj.roll.prints.remove(obj)
+        self._pending_roll = obj.roll
 
     def delete_current(self) -> None:
         self._pending_image = None
+        self._pending_roll = None
         super().delete_current()
+        if self._pending_roll is not None:
+            self.ctx.session.expire(self._pending_roll, ["prints"])
         delete_unreferenced(self.ctx.session, [self._pending_image])
 
 
