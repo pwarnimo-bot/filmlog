@@ -31,6 +31,7 @@ from filmlog.ui.rolls_view import RollsView
 from filmlog.ui.settings_dialog import SettingsDialog
 from filmlog.ui.statistics_view import StatisticsView
 from filmlog.ui.theme import apply_theme
+from filmlog.ui.widgets import fit_to_screen
 
 
 class MainWindow(QMainWindow):
@@ -38,11 +39,11 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.ctx = ctx
         self.setWindowTitle(self.tr("FilmLog"))
-        self.resize(1280, 800)
+        fit_to_screen(self, 1400, 860, margin=0)
 
         self.sidebar = QListWidget()
         self.sidebar.setObjectName("Sidebar")
-        self.sidebar.setFixedWidth(170)
+        self.sidebar.setFixedWidth(136)
         self.sidebar.setIconSize(QSize(20, 20))
         self.stack = QStackedWidget()
 

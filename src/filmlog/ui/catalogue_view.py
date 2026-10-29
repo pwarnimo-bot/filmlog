@@ -41,7 +41,7 @@ from filmlog.ui.editor import EditorForm
 from filmlog.ui.labels import label
 from filmlog.ui.list_detail import ListDetailPanel
 from filmlog.ui.table_model import Column
-from filmlog.ui.widgets import EnumCombo, FormBuilder, RefCombo
+from filmlog.ui.widgets import EnumCombo, FormBuilder, RefCombo, fit_to_screen
 
 
 def _tr(text: str) -> str:
@@ -588,7 +588,7 @@ class EditorDialog(QDialog):
         form.saved.connect(self._done)
         form.cancelled.connect(self.reject)
         form.load(None)
-        self.resize(480, 520)
+        fit_to_screen(self, 480, 560)
 
     def _done(self, obj: Any) -> None:
         self.result_obj = obj

@@ -17,6 +17,7 @@ from PySide6.QtWidgets import (
     QLineEdit,
     QMessageBox,
     QPushButton,
+    QSizePolicy,
     QSpinBox,
     QTabWidget,
     QVBoxLayout,
@@ -309,34 +310,35 @@ class RollForm(EditorForm):
 
 class RollsPanel(ListDetailPanel):
     def __init__(self, ctx: AppContext) -> None:
+        # Status sits next to the code so it stays visible in narrow windows.
         cols = [
-            Column(_tr("Code"), lambda r: r.code, width=85),
-            Column(_tr("Title"), lambda r: r.title, width=150),
-            Column(_tr("Film"), lambda r: r.film_stock.display_name, width=170),
-            Column(_tr("EI"), lambda r: r.shot_iso, align_right=False, width=135, chip=ei_chip),
-            Column(_tr("Camera"), lambda r: r.camera.display_name if r.camera else "", width=120),
+            Column(_tr("Code"), lambda r: r.code, width=78),
             Column(
                 _tr("Status"),
                 lambda r: "",
                 sort=lambda r: list(RollStatus).index(r.status),
-                width=90,
+                width=88,
                 chip=status_chip,
             ),  # fmt: skip
+            Column(_tr("Title"), lambda r: r.title, width=120),
+            Column(_tr("Film"), lambda r: r.film_stock.display_name, width=150),
+            Column(_tr("EI"), lambda r: r.shot_iso, width=125, chip=ei_chip),
+            Column(_tr("Camera"), lambda r: r.camera.display_name if r.camera else "", width=110),
             Column(
                 _tr("Developed"),
                 lambda r: r.development.date_developed if r.development else "",
-                width=90,
-            ),
+                width=85,
+            ),  # fmt: skip
             Column(
                 _tr("Prints"),
                 lambda r: len(r.prints) or "",
                 sort=lambda r: len(r.prints),
                 align_right=True,
-                width=50,
+                width=45,
             ),  # fmt: skip
         ]
         self.roll_form = RollForm(ctx)
-        super().__init__(ctx, "rolls", cols, self.roll_form, new_label=_tr("New roll"))
+        super().__init__(ctx, "rolls_v2", cols, self.roll_form, new_label=_tr("New roll"))
         self.set_split(42, 58)
         self._build_filters()
         self.roll_form.saved.connect(lambda _: self._update_detail())
@@ -355,13 +357,15 @@ class RollsPanel(ListDetailPanel):
         self.mark_button.clicked.connect(self.mark_developed)
         self.header = QLabel()
         self.header.setProperty("role", "page-title")
+        # Long titles get clipped rather than widening the window.
+        self.header.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Preferred)
+        self.header.setMinimumWidth(60)
         self.status_badge = Badge()
         self.ei_badge = Badge()
         head = QHBoxLayout()
-        head.addWidget(self.header)
+        head.addWidget(self.header, 1)
         head.addWidget(self.ei_badge)
         head.addWidget(self.status_badge)
-        head.addStretch(1)
         head.addWidget(self.mark_button)
 
         self.tabs = QTabWidget()
@@ -393,21 +397,14 @@ class RollsPanel(ListDetailPanel):
         self._filter_combos = (
             self.f_status, self.f_film, self.f_camera, self.f_developer, self.f_year, self.f_tag,
         )  # fmt: skip
-        bar = QHBoxLayout()
-        bar.setContentsMargins(0, 0, 0, 0)
         for c in self._filter_combos:
             c.setSizeAdjustPolicy(QComboBox.SizeAdjustPolicy.AdjustToContents)
             c.setMaximumWidth(170)
             c.currentIndexChanged.connect(self._filters_changed)
-            bar.addWidget(c)
+            self.filters.addWidget(c)
         self.clear_filters = QPushButton(_tr("Clear"))
         self.clear_filters.clicked.connect(self._clear_filters)
-        bar.addWidget(self.clear_filters)
-        bar.addStretch(1)
-        left = self.splitter.widget(0)
-        layout = left.layout() if left is not None else None
-        assert isinstance(layout, QVBoxLayout)
-        layout.insertLayout(1, bar)
+        self.filters.addWidget(self.clear_filters)
         self._fill_filters()
 
     def _fill_filters(self) -> None:

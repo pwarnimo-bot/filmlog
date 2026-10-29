@@ -176,3 +176,11 @@ each phase.
   colour** for selections. Darkroom stays red-only. Charts use the accent too.
 - Author: **Pol Warnimont**, developed with the help of Claude (Anthropic).
   SPDX headers (`GPL-3.0-or-later`) on all Python files.
+- **Minimum screen 1366×768**: the window's minimum size is ~840×525 (guarded
+  by a test). Filter bars and the exposure-table buttons wrap (`FlowLayout`);
+  form labels move above fields in narrow panes; the past-results panel goes
+  below the development form when the tab is narrower than 900 px; the window
+  and dialogs open no larger than the available screen; long headings are
+  clipped instead of widening the window. Roll list column order is now Code,
+  Status, Title, … so the status stays visible (saved under a new table key,
+  `rolls_v2`, so old column layouts aren't misapplied).

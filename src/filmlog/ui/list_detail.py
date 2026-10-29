@@ -21,6 +21,7 @@ from PySide6.QtWidgets import (
 
 from filmlog.ui.context import AppContext
 from filmlog.ui.editor import EditorForm
+from filmlog.ui.flow_layout import flow_container
 from filmlog.ui.table_model import Column, ObjectTable
 
 
@@ -61,15 +62,18 @@ class ListDetailPanel(QWidget):
 
         self.toolbar = QHBoxLayout()
         self.toolbar.addWidget(self.search, 1)
-        self.filters = QHBoxLayout()
-        self.toolbar.addLayout(self.filters)
         self.toolbar.addWidget(self.new_button)
         self.toolbar.addWidget(self.delete_button)
+        # Filters wrap onto extra lines in narrow windows; shown once a view adds some.
+        self.filter_bar, self.filters = flow_container()
+        self.filter_bar.hide()
 
         left = QWidget()
+        left.setMinimumWidth(280)
         lv = QVBoxLayout(left)
         lv.setContentsMargins(0, 0, 0, 0)
         lv.addLayout(self.toolbar)
+        lv.addWidget(self.filter_bar)
         lv.addWidget(self.table, 1)
 
         self.splitter = QSplitter(Qt.Orientation.Horizontal)
@@ -100,6 +104,7 @@ class ListDetailPanel(QWidget):
         raise NotImplementedError
 
     def refresh(self, select: Any = None) -> None:
+        self.filter_bar.setVisible(self.filters.count() > 0)
         self._suppress = True
         try:
             self.table.set_items(self.fetch(), keep=select)

@@ -22,7 +22,6 @@ from PySide6.QtWidgets import (
     QComboBox,
     QDialog,
     QDoubleSpinBox,
-    QHBoxLayout,
     QHeaderView,
     QLabel,
     QLineEdit,
@@ -52,6 +51,7 @@ from filmlog.ui.catalogue_view import notes_edit
 from filmlog.ui.context import AppContext
 from filmlog.ui.development_form import chemical_items, dilution_chips
 from filmlog.ui.editor import EditorForm
+from filmlog.ui.flow_layout import flow_container
 from filmlog.ui.images import ImageField, forget_thumbnail
 from filmlog.ui.labels import label
 from filmlog.ui.widgets import (
@@ -64,6 +64,7 @@ from filmlog.ui.widgets import (
     RatingCombo,
     RefCombo,
     TemperatureSpin,
+    fit_to_screen,
     row,
 )
 
@@ -294,16 +295,15 @@ class ExposureTable(QWidget):
         self.up_btn.clicked.connect(lambda: self._move(-1))
         self.down_btn.clicked.connect(lambda: self._move(1))
         self.total = QLabel()
-        bar = QHBoxLayout()
+        bar_widget, bar = flow_container(4)
         for b in (self.add_btn, self.burn_btn, self.dodge_btn, self.remove_btn, self.up_btn,
                   self.down_btn):  # fmt: skip
             bar.addWidget(b)
-        bar.addStretch(1)
-        bar.addWidget(self.total)
         v = QVBoxLayout(self)
         v.setContentsMargins(0, 0, 0, 0)
         v.addWidget(self.view)
-        v.addLayout(bar)
+        v.addWidget(bar_widget)
+        v.addWidget(self.total)
         self.model.edited.connect(self._edited)
         self.model.modelReset.connect(self._update_total)
 
@@ -381,6 +381,7 @@ class PrintForm(EditorForm):
         self.paper_size.setEditable(True)
         self.paper_size.addItems(list(PAPER_SIZES))
         self.paper_size.setToolTip(self.tr("Pick a preset or type a custom size"))
+        self.paper_size.setMaximumWidth(120)
         self.enlarger = QLineEdit()
         self.lens = QLineEdit()
         self.aperture = QLineEdit()
@@ -413,7 +414,9 @@ class PrintForm(EditorForm):
         self.image = ImageField(160)
         self.notes = notes_edit()
 
-        self.f_roll = form.add(self.tr("Roll"), row(self.roll, self.open_roll), self.roll)
+        self.f_roll = form.add(
+            self.tr("Roll"), row(self.roll, self.open_roll, stretch=False), self.roll
+        )
         form.add(self.tr("Frame"), row(self.frame, self.tr("Title"), self.title, stretch=False),
                  self.frame, self.title)  # fmt: skip
         form.add(self.tr("Date printed"), self.date)
@@ -661,7 +664,7 @@ class PrintDialog(QDialog):
         self.form.cancelled.connect(self.reject)
         v = QVBoxLayout(self)
         v.addWidget(self.form)
-        self.resize(760, 860)
+        fit_to_screen(self, 760, 860)
 
     def reject(self) -> None:
         if self.form.dirty and not self.form.maybe_discard():

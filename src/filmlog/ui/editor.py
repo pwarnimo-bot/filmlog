@@ -16,6 +16,7 @@ from PySide6.QtWidgets import (
     QMessageBox,
     QPushButton,
     QScrollArea,
+    QSizePolicy,
     QVBoxLayout,
     QWidget,
 )
@@ -41,6 +42,8 @@ class EditorForm(QWidget):
 
         self.heading = QLabel()
         self.heading.setProperty("role", "page-title")
+        # Long headings are clipped instead of widening the window.
+        self.heading.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Preferred)
         self.error = QLabel()
         self.error.setProperty("hint", True)
         self.error.setWordWrap(True)

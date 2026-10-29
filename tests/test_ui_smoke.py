@@ -70,3 +70,24 @@ def test_light_and_dark_use_system_accent(main_window: MainWindow) -> None:
     finally:
         theme._system_accent = saved
         apply_theme(app, "system")
+
+
+def test_fits_1366x768_laptop_screen(main_window: MainWindow) -> None:
+    """Every view must fit a 1366×768 screen (minus a panel/bar of ~40 px)."""
+    from filmlog.services import demo
+
+    demo.load_demo(main_window.ctx.session)
+    main_window.refresh_all()
+    for i in range(len(main_window.views)):
+        main_window.show_view(i)
+        hint = main_window.minimumSizeHint()
+        assert hint.width() <= 1366 and hint.height() <= 728, (i, hint)
+
+
+def test_dialogs_fit_screen(main_window: MainWindow) -> None:
+    from filmlog.ui.print_form import PrintDialog
+
+    dlg = PrintDialog(main_window.ctx, main_window)
+    avail = dlg.screen().availableGeometry()
+    assert dlg.width() <= avail.width() and dlg.height() <= avail.height()
+    dlg.deleteLater()

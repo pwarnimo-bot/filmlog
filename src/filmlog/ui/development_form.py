@@ -9,6 +9,7 @@ from collections.abc import Sequence
 from typing import Any
 
 from PySide6.QtCore import QCoreApplication, Qt, Signal
+from PySide6.QtGui import QResizeEvent
 from PySide6.QtWidgets import (
     QCheckBox,
     QComboBox,
@@ -504,6 +505,17 @@ class DevelopmentTab(QWidget):
         v.addLayout(bar)
         v.addWidget(self.empty, 1)
         v.addWidget(split, 1)
+
+    # Below this width the past-results panel goes under the form, not beside it.
+    SIDE_BY_SIDE_MIN_WIDTH = 900
+
+    def resizeEvent(self, event: QResizeEvent) -> None:  # noqa: N802
+        super().resizeEvent(event)
+        wide = event.size().width() >= self.SIDE_BY_SIDE_MIN_WIDTH
+        orientation = Qt.Orientation.Horizontal if wide else Qt.Orientation.Vertical
+        if self.split.orientation() != orientation:
+            self.split.setOrientation(orientation)
+            self.split.setSizes([3000, 2000] if wide else [3000, 1800])
 
     def _toggle(self, on: bool) -> None:
         self.past.setVisible(on)

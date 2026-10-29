@@ -11,7 +11,7 @@ from enum import StrEnum
 from typing import Any
 
 from PySide6.QtCore import QDate, QSignalBlocker, QStringListModel, Qt, Signal
-from PySide6.QtGui import QFocusEvent, QValidator
+from PySide6.QtGui import QFocusEvent, QGuiApplication, QValidator
 from PySide6.QtWidgets import (
     QComboBox,
     QCompleter,
@@ -252,7 +252,7 @@ class RefCombo(QComboBox):
         self.new_label = new_label
         self.setEditable(True)
         self.setInsertPolicy(QComboBox.InsertPolicy.NoInsert)
-        self.setMinimumContentsLength(22)
+        self.setMinimumContentsLength(12)
         self.setSizeAdjustPolicy(QComboBox.SizeAdjustPolicy.AdjustToMinimumContentsLengthWithIcon)
         comp = QCompleter(self)
         comp.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
@@ -454,6 +454,8 @@ class FormBuilder:
         self.layout = layout or QFormLayout()
         self.layout.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow)
         self.layout.setLabelAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
+        # In narrow panes labels move above their fields instead of forcing width.
+        self.layout.setRowWrapPolicy(QFormLayout.RowWrapPolicy.WrapLongRows)
         self._focus_chain: list[QWidget] = []
 
     def add(self, text: str, widget: QWidget | QLayout, *focusables: QWidget) -> Field:
@@ -486,6 +488,16 @@ class FormBuilder:
         for a, b in zip(chain, chain[1:], strict=False):
             QWidget.setTabOrder(a, b)
         return chain
+
+
+def fit_to_screen(widget: QWidget, width: int, height: int, margin: int = 48) -> None:
+    """Resize ``widget`` to width×height, but never beyond the available screen."""
+    screen = widget.screen() or QGuiApplication.primaryScreen()
+    if screen is not None:
+        avail = screen.availableGeometry()
+        width = min(width, avail.width() - margin)
+        height = min(height, avail.height() - margin)
+    widget.resize(width, height)
 
 
 def row(*widgets: QWidget | str, stretch: bool = True) -> QHBoxLayout:
