@@ -2,6 +2,8 @@
 #
 # Builds FilmLog from this local git checkout.
 #   cd packaging/arch && makepkg -si
+# Skip the test suite (no python-pytest / python-pytest-qt needed):
+#   makepkg -si --nocheck
 # Build a release tag instead of the main branch:
 #   FILMLOG_REF=tag=v0.1.0 makepkg -si
 
@@ -36,8 +38,7 @@ build() {
 
 check() {
   cd "$pkgname"
-  QT_QPA_PLATFORM=offscreen PYTHONPATH=src python -m pytest -q tests || \
-    echo "warning: tests failed or test deps missing"
+  QT_QPA_PLATFORM=offscreen PYTHONPATH=src python -m pytest -q tests
 }
 
 package() {
