@@ -21,6 +21,8 @@ from PySide6.QtWidgets import (
 
 from filmlog import __version__
 from filmlog.ui.base_view import BaseView
+from filmlog.ui.cameras_view import CamerasView
+from filmlog.ui.catalogue_view import CatalogueView
 from filmlog.ui.context import AppContext
 from filmlog.ui.settings_dialog import SettingsDialog
 from filmlog.ui.theme import apply_theme
@@ -72,10 +74,19 @@ class MainWindow(QMainWindow):
         return [
             PlaceholderView(self.tr("Rolls")),
             PlaceholderView(self.tr("Prints")),
-            PlaceholderView(self.tr("Cameras")),
-            PlaceholderView(self.tr("Catalogue")),
+            self._cameras_view(),
+            CatalogueView(self.ctx),
             PlaceholderView(self.tr("Statistics")),
         ]
+
+    def _cameras_view(self) -> BaseView:
+        view = CamerasView(self.ctx)
+        view.openRoll.connect(self.open_roll)
+        return view
+
+    def open_roll(self, roll_id: int) -> None:
+        """Navigate to the Rolls view and select a roll (implemented with the Rolls view)."""
+        self.show_view(0)
 
     def _add_view(self, view: BaseView) -> None:
         self.views.append(view)

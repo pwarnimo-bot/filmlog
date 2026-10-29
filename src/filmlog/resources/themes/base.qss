@@ -4,11 +4,19 @@ QListWidget#Sidebar {
     border: none;
     font-size: 11pt;
     padding-top: 6px;
+    outline: none;
 }
 QListWidget#Sidebar::item {
     padding: 8px 12px;
     border-radius: 4px;
     margin: 1px 6px;
+}
+QListWidget#Sidebar::item:selected {
+    background: palette(highlight);
+    color: palette(highlighted-text);
+}
+QListWidget#Sidebar::item:hover:!selected {
+    background: palette(alternate-base);
 }
 
 QLabel.hint, QLabel[hint="true"] {

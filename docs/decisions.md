@@ -53,3 +53,21 @@ each phase.
 - Seed dilution strings are `;`-separated in `common_dilutions`.
 - "Kodak/Harman Selenium toner" is seeded as *Kodak Selenium Toner* with a note.
   "Adox Adonal / R09 One Shot" is one entry with that name.
+
+## Phase 3 — Cameras & Catalogue UI
+
+- Generic **list + editor** pattern (`ListDetailPanel` + `EditorForm`) used by
+  every CRUD screen: searchable `ObjectTable` (model/view with a
+  `QSortFilterProxyModel`) on the left, form on the right.
+- Switching rows / creating a new item with unsaved changes asks
+  Save / Discard / Cancel (a confirmation, not an error popup).
+- Catalogue delete rule: in-use items can't be deleted; the dialog offers
+  "Mark as discontinued" instead. Discontinued items are greyed in lists and
+  hidden from dropdowns for new records (still shown on existing ones).
+- Deleting a camera that has rolls is allowed after a warning (rolls keep their
+  data, camera link becomes empty); the warning suggests Retired/Sold status.
+- The live search matches **all words** anywhere in the visible row.
+- Right-click a table header to show/hide columns; widths, order, visibility and
+  sort are remembered per table.
+- Empty optional numbers/dates show "—" (spin box minimum / special date);
+  press Delete/Backspace on a date's first section to clear it.
