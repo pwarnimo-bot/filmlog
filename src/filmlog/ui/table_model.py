@@ -11,17 +11,28 @@ from PySide6.QtCore import (
     QByteArray,
     QModelIndex,
     QPersistentModelIndex,
+    QRect,
     QSortFilterProxyModel,
     Qt,
 )
-from PySide6.QtGui import QAction, QBrush, QColor, QKeySequence
-from PySide6.QtWidgets import QAbstractItemView, QHeaderView, QTableView, QWidget
+from PySide6.QtGui import QAction, QBrush, QColor, QFont, QFontMetrics, QKeySequence, QPainter
+from PySide6.QtWidgets import (
+    QAbstractItemView,
+    QApplication,
+    QHeaderView,
+    QStyle,
+    QStyledItemDelegate,
+    QStyleOptionViewItem,
+    QTableView,
+    QWidget,
+)
 
 from filmlog.services.settings import Settings
 
 AnyIndex = QModelIndex | QPersistentModelIndex
 SORT_ROLE = Qt.ItemDataRole.UserRole + 1
 OBJECT_ROLE = Qt.ItemDataRole.UserRole + 2
+CHIP_ROLE = Qt.ItemDataRole.UserRole + 3
 
 
 @dataclass
@@ -33,6 +44,8 @@ class Column:
     width: int | None = None
     tooltip: Callable[[Any], str] | None = None
     foreground: Callable[[Any], QColor | None] | None = None
+    # Optional (chip text, chip kind) drawn as a coloured badge after the text.
+    chip: Callable[[Any], tuple[str, str] | None] | None = None
 
 
 class ObjectTableModel(QAbstractTableModel):
@@ -75,6 +88,8 @@ class ObjectTableModel(QAbstractTableModel):
             return key.lower() if isinstance(key, str) else key
         if role == OBJECT_ROLE:
             return obj
+        if role == CHIP_ROLE:
+            return col.chip(obj) if col.chip else None
         if role == Qt.ItemDataRole.TextAlignmentRole and col.align_right:
             return int(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
         if role == Qt.ItemDataRole.ToolTipRole and col.tooltip:
@@ -139,6 +154,54 @@ class FilterProxy(QSortFilterProxyModel):
             return str(a) < str(b)
 
 
+class ChipDelegate(QStyledItemDelegate):
+    """Draws the cell text followed by a rounded colour badge (status, push/pull)."""
+
+    def paint(self, painter: QPainter, option: QStyleOptionViewItem, index: AnyIndex) -> None:
+        chip = index.data(CHIP_ROLE)
+        if not chip:
+            super().paint(painter, option, index)
+            return
+        text, kind = chip
+        opt = QStyleOptionViewItem(option)
+        self.initStyleOption(opt, index)
+        cell_text = opt.text
+        opt.text = ""
+        style = opt.widget.style() if opt.widget else QApplication.style()
+        style.drawControl(QStyle.ControlElement.CE_ItemViewItem, opt, painter, opt.widget)
+
+        from filmlog.ui.widgets import chip_colours
+
+        painter.save()
+        rect = opt.rect.adjusted(6, 0, -4, 0)
+        fm = opt.fontMetrics
+        if cell_text:
+            painter.setPen(
+                opt.palette.highlightedText().color()
+                if opt.state & QStyle.StateFlag.State_Selected
+                else opt.palette.text().color()
+            )
+            painter.drawText(rect, int(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft),
+                             cell_text)  # fmt: skip
+            rect.setLeft(rect.left() + fm.horizontalAdvance(cell_text) + 6)
+        bg, fg = chip_colours(kind)
+        font = QFont(opt.font)
+        font.setPointSizeF(max(7.0, font.pointSizeF() * 0.85))
+        font.setBold(True)
+        painter.setFont(font)
+        cfm = QFontMetrics(font)
+        w = cfm.horizontalAdvance(text) + 14
+        h = cfm.height() + 4
+        chip_rect = QRect(rect.left(), rect.center().y() - h // 2 + 1, w, h)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing)
+        painter.setPen(Qt.PenStyle.NoPen)
+        painter.setBrush(QColor(bg))
+        painter.drawRoundedRect(chip_rect, h / 2, h / 2)
+        painter.setPen(QColor(fg))
+        painter.drawText(chip_rect, int(Qt.AlignmentFlag.AlignCenter), text)
+        painter.restore()
+
+
 class ObjectTable(QTableView):
     """Sortable table whose header state is remembered in settings."""
 
@@ -169,7 +232,10 @@ class ObjectTable(QTableView):
         header.setStretchLastSection(True)
         header.setSectionResizeMode(QHeaderView.ResizeMode.Interactive)
         header.setContextMenuPolicy(Qt.ContextMenuPolicy.ActionsContextMenu)
+        self._chip_delegate = ChipDelegate(self)
         for i, col in enumerate(columns):
+            if col.chip:
+                self.setItemDelegateForColumn(i, self._chip_delegate)
             if col.width:
                 self.setColumnWidth(i, col.width)
             act = QAction(col.header, header)

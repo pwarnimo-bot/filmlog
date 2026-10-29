@@ -24,6 +24,7 @@ from filmlog.ui.base_view import BaseView
 from filmlog.ui.cameras_view import CamerasView
 from filmlog.ui.catalogue_view import CatalogueView
 from filmlog.ui.context import AppContext
+from filmlog.ui.rolls_view import RollsView
 from filmlog.ui.settings_dialog import SettingsDialog
 from filmlog.ui.theme import apply_theme
 
@@ -72,7 +73,7 @@ class MainWindow(QMainWindow):
 
     def _build_views(self) -> list[BaseView]:
         return [
-            PlaceholderView(self.tr("Rolls")),
+            RollsView(self.ctx),
             PlaceholderView(self.tr("Prints")),
             self._cameras_view(),
             CatalogueView(self.ctx),
@@ -85,8 +86,11 @@ class MainWindow(QMainWindow):
         return view
 
     def open_roll(self, roll_id: int) -> None:
-        """Navigate to the Rolls view and select a roll (implemented with the Rolls view)."""
+        """Navigate to the Rolls view and select a roll."""
         self.show_view(0)
+        view = self.views[0]
+        if isinstance(view, RollsView):
+            view.select_roll(roll_id)
 
     def _add_view(self, view: BaseView) -> None:
         self.views.append(view)

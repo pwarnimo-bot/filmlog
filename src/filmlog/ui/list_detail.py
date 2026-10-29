@@ -5,7 +5,7 @@ from __future__ import annotations
 from collections.abc import Sequence
 from typing import Any
 
-from PySide6.QtCore import Qt, Signal
+from PySide6.QtCore import QByteArray, Qt, Signal
 from PySide6.QtWidgets import (
     QHBoxLayout,
     QLineEdit,
@@ -74,6 +74,8 @@ class ListDetailPanel(QWidget):
         self.splitter.addWidget(self.detail_widget())
         self.splitter.setStretchFactor(0, 3)
         self.splitter.setStretchFactor(1, 2)
+        self._name = name
+        self._restore_splitter()
         self.splitter.setChildrenCollapsible(False)
 
         layout = QVBoxLayout(self)
@@ -117,7 +119,7 @@ class ListDetailPanel(QWidget):
         self.delete_button.setEnabled(obj is not None)
         if obj is self.editor.obj:
             return
-        if not self.editor.maybe_discard():
+        if not self.maybe_discard():
             # Go back to the record being edited.
             self._suppress = True
             if self.editor.obj is not None and not self.editor.is_new():
@@ -141,8 +143,12 @@ class ListDetailPanel(QWidget):
 
     # -- actions -----------------------------------------------------------
 
+    def maybe_discard(self) -> bool:
+        """Ask about unsaved changes before leaving the current record."""
+        return self.editor.maybe_discard()
+
     def new_item(self) -> None:
-        if not self.editor.maybe_discard():
+        if not self.maybe_discard():
             return
         self._suppress = True
         self.table.clearSelection()
@@ -187,5 +193,17 @@ class ListDetailPanel(QWidget):
         self.refresh()
         self.changed.emit()
 
+    def set_split(self, left: int, right: int) -> None:
+        """Default proportions, unless the user's own sizes were restored."""
+        if f"{self._name}__split" not in self.ctx.settings.table_states:
+            self.splitter.setSizes([left * 100, right * 100])
+
+    def _restore_splitter(self) -> None:
+        state = self.ctx.settings.table_states.get(f"{self._name}__split")
+        if state:
+            self.splitter.restoreState(QByteArray.fromBase64(state.encode()))
+
     def shutdown(self) -> None:
         self.table.save_state()
+        data = bytes(self.splitter.saveState().toBase64().data()).decode()
+        self.ctx.settings.table_states[f"{self._name}__split"] = data

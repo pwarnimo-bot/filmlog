@@ -8,7 +8,7 @@ from enum import StrEnum
 from typing import Any
 
 from PySide6.QtCore import QDate, QSignalBlocker, QStringListModel, Qt, Signal
-from PySide6.QtGui import QFocusEvent
+from PySide6.QtGui import QFocusEvent, QValidator
 from PySide6.QtWidgets import (
     QComboBox,
     QCompleter,
@@ -393,12 +393,16 @@ BADGE_COLOURS = {
 }
 
 
-def badge_style(kind: str) -> str:
+def chip_colours(kind: str) -> tuple[str, str]:
     from filmlog.ui.theme import current_theme
 
-    bg, fg = BADGE_COLOURS.get(kind, ("#6b7280", "#ffffff"))
     if current_theme() == "darkroom":
-        bg, fg = "#2a0404", "#c02020"
+        return "#2a0404", "#c02020"
+    return BADGE_COLOURS.get(kind, ("#6b7280", "#ffffff"))
+
+
+def badge_style(kind: str) -> str:
+    bg, fg = chip_colours(kind)
     return f"background:{bg}; color:{fg};"
 
 
@@ -513,3 +517,80 @@ def connect_changed(widgets: Iterable[QWidget], slot: Callable[[], None]) -> Non
             w.textChanged.connect(slot)
         elif isinstance(w, QAbstractButton):
             w.toggled.connect(slot)
+
+
+# --------------------------------------------------------------------------- special fields
+
+
+class StopsSpin(QDoubleSpinBox):
+    """Push/pull in ⅓-stop steps, shown as "+1⅓", "−⅔", "0"."""
+
+    def __init__(self, parent: QWidget | None = None) -> None:
+        super().__init__(parent)
+        self.setRange(-5.0, 5.0)
+        self.setDecimals(2)
+        self.setSingleStep(1 / 3)
+        self.setMaximumWidth(100)
+        self.setToolTip(self.tr("Push/pull in stops; calculated from EI ÷ box ISO, editable"))
+
+    def textFromValue(self, value: float) -> str:  # noqa: N802
+        from filmlog.services.pushpull import format_stops
+
+        return format_stops(value)
+
+    def valueFromText(self, text: str) -> float:  # noqa: N802
+        v = parse_stops(text)
+        return 0.0 if v is None else v
+
+    def validate(self, text: str, pos: int) -> tuple[QValidator.State, str, int]:
+        if parse_stops(text) is not None:
+            return QValidator.State.Acceptable, text, pos
+        return QValidator.State.Intermediate, text, pos
+
+    def stepBy(self, steps: int) -> None:  # noqa: N802
+        from filmlog.services.pushpull import round_to_third
+
+        self.setValue(round_to_third(self.value() + steps / 3))
+
+
+def parse_stops(text: str) -> float | None:
+    import re
+
+    t = text.strip().replace("−", "-").replace(" ", "").replace(",", ".")
+    if not t:
+        return None
+    m = re.fullmatch(r"([+-]?)(\d*)([⅓⅔]?)", t)
+    if m and (m.group(2) or m.group(3)):
+        whole = int(m.group(2) or 0)
+        frac = {"": 0.0, "⅓": 1 / 3, "⅔": 2 / 3}[m.group(3)]
+        v = whole + frac
+        return round(-v if m.group(1) == "-" else v, 2)
+    try:
+        return round(float(t), 2)
+    except ValueError:
+        return None
+
+
+class ListCompleter(QCompleter):
+    """Completes the last item of a comma-separated list (tags, roll codes)."""
+
+    def __init__(self, words: Sequence[str], edit: QLineEdit) -> None:
+        super().__init__(list(words), edit)
+        self.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
+        self.setFilterMode(Qt.MatchFlag.MatchContains)
+        self._edit = edit
+        edit.setCompleter(self)
+
+    def set_words(self, words: Sequence[str]) -> None:
+        model = self.model()
+        if isinstance(model, QStringListModel):
+            model.setStringList(list(words))
+
+    def splitPath(self, path: str) -> list[str]:  # noqa: N802
+        return [path.split(",")[-1].strip()]
+
+    def pathFromIndex(self, index: Any) -> str:  # noqa: N802
+        chosen = super().pathFromIndex(index)
+        parts = [p.strip() for p in self._edit.text().split(",")]
+        parts[-1] = chosen
+        return ", ".join(p for p in parts if p) + ", "

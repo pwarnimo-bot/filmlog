@@ -71,3 +71,30 @@ each phase.
   sort are remembered per table.
 - Empty optional numbers/dates show "—" (spin box minimum / special date);
   press Delete/Backspace on a date's first section to clear it.
+
+## Phase 4 — Rolls & Development UI
+
+- **Push/pull** is recalculated whenever the EI or film changes; the user can
+  then override it with the ⅓-stop spin box. Changing the film also moves the EI
+  to the new box speed unless the user had typed a different EI.
+- **Status flow**: the status combo offers loaded / exposed / developed. A roll
+  with a development record cannot be moved back out of "developed" (inline
+  hint); "Delete development" on the Development tab resets it to "exposed".
+- **Mark as developed** saves pending roll edits first, then opens a *new,
+  unsaved* development pre-filled per the spec (same film + EI → same film →
+  last). Saving it links it to the roll and sets status = developed; Cancel
+  leaves the roll untouched.
+- Pre-fill copies chemistry, dilutions, times, agitation and tank — not the
+  date (today), rating, notes or "developed with".
+- **Past results** panel: same film + developer, and by default the same
+  dilution (checkbox to widen). "Use selected" (or double-click) copies
+  dilution, time, temperature and agitation into the form. A caption reminds
+  that published times are only starting points.
+- "Developed with" is entered as comma-separated roll codes (with completion)
+  and validated inline.
+- Roll filters: status, film (only films that have rolls), camera, developer,
+  year, tag. "Year" is taken from the load/finish/develop date, else from a
+  `YYYY-` code prefix.
+- Selecting a new camera sets the roll's format from the camera, and if the
+  camera lists exactly one lens it pre-fills the lens.
+- Tags are case-insensitive and unused tags are pruned on save/delete.

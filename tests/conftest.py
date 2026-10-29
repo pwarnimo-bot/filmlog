@@ -31,3 +31,22 @@ def db(isolated_paths: Path):  # type: ignore[no-untyped-def]
 def session(db):  # type: ignore[no-untyped-def]
     with db.session() as s:
         yield s
+
+
+@pytest.fixture
+def main_window(qtbot):  # type: ignore[no-untyped-def]
+    """A MainWindow on a fresh temp DB, destroyed afterwards (keeps later tests fast)."""
+    from PySide6.QtCore import QCoreApplication, QEvent
+    from PySide6.QtWidgets import QApplication
+
+    from filmlog.app import build_main_window, create_app
+
+    win = build_main_window(create_app([]))
+    win.show()
+    yield win
+    win.ctx.session.close()
+    win.ctx.db.engine.dispose()
+    win.close()
+    win.deleteLater()
+    QCoreApplication.sendPostedEvents(None, QEvent.Type.DeferredDelete)
+    QApplication.processEvents()

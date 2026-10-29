@@ -2,10 +2,8 @@ from __future__ import annotations
 
 from PySide6.QtWidgets import QMessageBox
 from pytest import MonkeyPatch
-from pytestqt.qtbot import QtBot
 from sqlalchemy import select
 
-from filmlog.app import build_main_window, create_app
 from filmlog.db.models import Camera, FilmStock
 from filmlog.ui.cameras_view import CamerasView
 from filmlog.ui.catalogue_view import CatalogueView, FilmsPanel
@@ -13,15 +11,8 @@ from filmlog.ui.main_window import MainWindow
 from tests.factories import make_roll
 
 
-def _window(qtbot: QtBot) -> MainWindow:
-    win = build_main_window(create_app([]))
-    qtbot.addWidget(win)
-    win.show()
-    return win
-
-
-def test_create_camera_with_validation(qtbot: QtBot) -> None:
-    win = _window(qtbot)
+def test_create_camera_with_validation(main_window: MainWindow) -> None:
+    win = main_window
     win.show_view(2)
     view = win.current_view()
     assert isinstance(view, CamerasView)
@@ -39,9 +30,9 @@ def test_create_camera_with_validation(qtbot: QtBot) -> None:
 
 
 def test_catalogue_lists_seed_and_blocks_delete_in_use(
-    qtbot: QtBot, monkeypatch: MonkeyPatch
+    main_window: MainWindow, monkeypatch: MonkeyPatch
 ) -> None:
-    win = _window(qtbot)
+    win = main_window
     win.show_view(3)
     view = win.current_view()
     assert isinstance(view, CatalogueView)
@@ -60,8 +51,8 @@ def test_catalogue_lists_seed_and_blocks_delete_in_use(
     assert s.get(FilmStock, fp4.id) is not None
 
 
-def test_chemical_kind_filter(qtbot: QtBot) -> None:
-    win = _window(qtbot)
+def test_chemical_kind_filter(main_window: MainWindow) -> None:
+    win = main_window
     win.show_view(3)
     view = win.current_view()
     assert isinstance(view, CatalogueView)
