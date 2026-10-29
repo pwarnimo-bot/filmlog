@@ -25,6 +25,7 @@ from filmlog.db.models import Camera, FilmStock, Roll
 from filmlog.services import catalogue as cat
 from filmlog.services import rolls as roll_service
 from filmlog.services.cameras import list_cameras
+from filmlog.services.images import delete_unreferenced, images_of_roll
 from filmlog.services.pushpull import compute_stops
 from filmlog.ui.base_view import BaseView
 from filmlog.ui.catalogue_view import EditorDialog, FilmStockForm, notes_edit
@@ -33,6 +34,7 @@ from filmlog.ui.development_form import DevelopmentTab
 from filmlog.ui.editor import EditorForm
 from filmlog.ui.labels import label
 from filmlog.ui.list_detail import ListDetailPanel
+from filmlog.ui.roll_tabs import ImagesTab, PrintsTab
 from filmlog.ui.table_model import Column
 from filmlog.ui.widgets import (
     Badge,
@@ -361,8 +363,14 @@ class RollsPanel(ListDetailPanel):
 
         self.tabs = QTabWidget()
         self.dev_tab = DevelopmentTab(self.ctx)
+        self.prints_tab = PrintsTab(self.ctx)
+        self.images_tab = ImagesTab(self.ctx)
         self.tabs.addTab(self.editor, _tr("Roll"))
         self.tabs.addTab(self.dev_tab, _tr("Development"))
+        self.tabs.addTab(self.prints_tab, _tr("Prints"))
+        self.tabs.addTab(self.images_tab, _tr("Images"))
+        self.prints_tab.changed.connect(self._prints_changed)
+        self.images_tab.changed.connect(self._prints_changed)
         self.editor.heading.hide()
 
         w = QWidget()
@@ -498,6 +506,23 @@ class RollsPanel(ListDetailPanel):
         for i in range(1, self.tabs.count()):
             self.tabs.setTabEnabled(i, saved)
         self._update_dev_tab()
+        self.prints_tab.set_roll(roll if saved else None)
+        self.images_tab.set_roll(roll if saved else None)
+        if roll is not None and saved:
+            n = len(roll.prints)
+            self.tabs.setTabText(2, _tr("Prints ({0})").format(n) if n else _tr("Prints"))
+
+    def _prints_changed(self) -> None:
+        roll = self.current_roll()
+        self._suppress = True
+        try:
+            self.table.set_items(self.fetch(), keep=roll)
+        finally:
+            self._suppress = False
+        if roll is not None:
+            n = len(roll.prints)
+            self.tabs.setTabText(2, _tr("Prints ({0})").format(n) if n else _tr("Prints"))
+        self.changed.emit()
 
     def _update_dev_tab(self) -> None:
         roll = self.current_roll()
@@ -571,8 +596,23 @@ class RollsPanel(ListDetailPanel):
     def describe(self, obj: Any) -> str:
         return obj.code
 
+    def before_delete(self, obj: Any) -> None:
+        self._pending_images = images_of_roll(obj)
+
     def confirm_delete(self, obj: Any) -> bool:
         assert isinstance(obj, Roll)
+        n_img = len(images_of_roll(obj))
+        if n_img and not obj.prints:
+            btn = QMessageBox.question(
+                self,
+                _tr("Delete roll"),
+                _tr("Delete roll {0}? Its {1} attached image(s) will be deleted too.").format(
+                    obj.code, n_img
+                ),
+                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+                QMessageBox.StandardButton.No,
+            )
+            return btn == QMessageBox.StandardButton.Yes
         if obj.prints:
             lines = "\n".join(
                 f"  • {_tr('frame')} {p.frame or '?'}"
@@ -587,6 +627,8 @@ class RollsPanel(ListDetailPanel):
                 "Roll {0} has {1} print(s) which will be deleted too:\n\n{2}\n\n"
                 "Delete the roll and all its prints?"
             ).format(obj.code, len(obj.prints), lines)
+            if n_img:
+                text += "\n" + _tr("{0} attached image(s) will be deleted as well.").format(n_img)
             btn = QMessageBox.warning(
                 self,
                 _tr("Delete roll"),
@@ -598,7 +640,9 @@ class RollsPanel(ListDetailPanel):
         return super().confirm_delete(obj)
 
     def delete_current(self) -> None:
+        self._pending_images = []
         super().delete_current()
+        delete_unreferenced(self.ctx.session, self._pending_images)
         roll_service.prune_unused_tags(self.ctx.session)
         self.ctx.session.commit()
         self._update_detail()

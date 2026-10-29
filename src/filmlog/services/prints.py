@@ -44,7 +44,7 @@ _MAIN = (ExposurePurpose.BASE, ExposurePurpose.SOFT, ExposurePurpose.HARD)
 
 def total_exposure(exposures: Sequence[PrintExposure]) -> float:
     """Total enlarger-on time. Dodging happens *during* the base exposure, so it adds 0."""
-    return round(sum(e.seconds for e in exposures if e.purpose != ExposurePurpose.DODGE), 2)
+    return round(sum(e.seconds or 0.0 for e in exposures if e.purpose != ExposurePurpose.DODGE), 2)
 
 
 def _grade(g: str) -> str:
@@ -111,11 +111,13 @@ def duplicate_print(src: Print) -> Print:
 def default_exposures(method: ContrastMethod) -> list[PrintExposure]:
     if method == ContrastMethod.SPLIT_GRADE:
         return [
-            PrintExposure(position=0, filter_grade="00", purpose=ExposurePurpose.SOFT),
-            PrintExposure(position=1, filter_grade="5", purpose=ExposurePurpose.HARD),
+            PrintExposure(position=0, filter_grade="00", purpose=ExposurePurpose.SOFT, seconds=0.0),
+            PrintExposure(position=1, filter_grade="5", purpose=ExposurePurpose.HARD, seconds=0.0),
         ]
     grade = "2" if method == ContrastMethod.SINGLE_FILTER else "none"
-    return [PrintExposure(position=0, filter_grade=grade, purpose=ExposurePurpose.BASE)]
+    return [
+        PrintExposure(position=0, filter_grade=grade, purpose=ExposurePurpose.BASE, seconds=0.0)
+    ]
 
 
 @dataclass
@@ -161,3 +163,48 @@ def list_prints(session: Session, flt: PrintFilter | None = None) -> Sequence[Pr
     if flt.roll_id is not None:
         q = q.where(Print.roll_id == flt.roll_id)
     return session.scalars(q.order_by(Print.date_printed.desc(), Print.id.desc())).unique().all()
+
+
+# Settings carried over to a new print from the previous one (same darkroom session).
+SESSION_FIELDS: tuple[str, ...] = (
+    "paper_id",
+    "paper_size",
+    "enlarger",
+    "enlarging_lens",
+    "aperture",
+    "head_height_cm",
+    "contrast_method",
+    "developer_id",
+    "dev_dilution",
+    "dev_time_s",
+    "dev_temperature_c",
+    "stop_chemical_id",
+    "stop_time_s",
+    "fixer_id",
+    "fixer_dilution",
+    "fix_time_s",
+    "wash_time_s",
+)
+
+
+def last_print(session: Session, roll_id: int | None = None) -> Print | None:
+    """Most recent print of ``roll_id`` if any, else the most recent print overall."""
+    order = (Print.date_printed.desc().nulls_last(), Print.id.desc())
+    if roll_id is not None:
+        p = session.scalars(select(Print).where(Print.roll_id == roll_id).order_by(*order)).first()
+        if p is not None:
+            return p
+    return session.scalars(select(Print).order_by(*order)).first()
+
+
+def new_print_for(session: Session, roll: Roll | None) -> tuple[Print, Print | None]:
+    """A new unsaved print, with paper/enlarger/chemistry taken from the last print."""
+    p = Print(date_printed=dt.date.today(), contrast_method=ContrastMethod.SINGLE_FILTER)
+    if roll is not None:
+        p.roll_id = roll.id
+    src = last_print(session, roll.id if roll is not None else None)
+    if src is not None:
+        for f in SESSION_FIELDS:
+            setattr(p, f, getattr(src, f))
+    p.exposures = default_exposures(p.contrast_method)
+    return p, src

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 
-from PySide6.QtCore import QCoreApplication, QModelIndex, Qt, Signal
+from PySide6.QtCore import QCoreApplication, QModelIndex, QSize, Qt, Signal
 from PySide6.QtWidgets import (
     QLabel,
     QLineEdit,
@@ -18,10 +18,12 @@ from PySide6.QtWidgets import (
 from filmlog.db.enums import CameraStatus, CameraType, FilmFormat
 from filmlog.db.models import Camera, Roll
 from filmlog.services import cameras as cam_service
+from filmlog.services.images import delete_unreferenced
 from filmlog.ui.base_view import BaseView
 from filmlog.ui.catalogue_view import notes_edit
 from filmlog.ui.context import AppContext
 from filmlog.ui.editor import EditorForm
+from filmlog.ui.images import ImageField, forget_thumbnail, load_thumbnail
 from filmlog.ui.labels import label
 from filmlog.ui.list_detail import ListDetailPanel
 from filmlog.ui.table_model import OBJECT_ROLE, Column, ObjectTable
@@ -61,6 +63,8 @@ class CameraForm(EditorForm):
         self.acquired = OptionalDateEdit()
         self.price = OptionalDoubleSpin(0, 1_000_000, 2)
         self.status = EnumCombo(CameraStatus)
+        self.photo = ImageField(150)
+        self.photo.changed.connect(self._mark_dirty)
         self.notes = notes_edit()
 
         self.f_make = form.add(self.tr("Make"), self.make)
@@ -71,6 +75,7 @@ class CameraForm(EditorForm):
         form.add(self.tr("Lens mount"), self.mount)
         form.add(self.tr("Lenses"), self.lenses)
         form.add(self.tr("Status"), self.status)
+        form.add(self.tr("Photo"), self.photo, self.photo.choose)
         form.section(self.tr("Details"))
         form.add(self.tr("Shutter"), self.shutter)
         form.add(self.tr("Metering"), self.metering)
@@ -104,6 +109,9 @@ class CameraForm(EditorForm):
         self.acquired.set_value(obj.acquired_date)
         self.price.set_value(obj.acquired_price)
         self.status.set_value(obj.status)
+        delete_unreferenced(self.ctx.session, self.photo.imported)
+        self.photo.set_name(obj.photo)
+        self._original_photo = obj.photo if obj.id is not None else None
         self.notes.setPlainText(obj.notes or "")
 
     def validate(self) -> bool:
@@ -134,7 +142,19 @@ class CameraForm(EditorForm):
         obj.acquired_date = self.acquired.value()
         obj.acquired_price = self.price.value_or_none()
         obj.status = self.status.value()
+        obj.photo = self.photo.name()
         obj.notes = self.notes.toPlainText()
+
+    def after_save(self, obj: object, is_new: bool) -> None:
+        delete_unreferenced(self.ctx.session, [self._original_photo, *self.photo.imported])
+        forget_thumbnail(self._original_photo)
+        self._original_photo = self.photo.name()
+        self.photo.imported = []
+
+    def cancel(self) -> None:
+        delete_unreferenced(self.ctx.session, self.photo.imported)
+        self.photo.imported = []
+        super().cancel()
 
 
 class CamerasPanel(ListDetailPanel):
@@ -143,7 +163,12 @@ class CamerasPanel(ListDetailPanel):
     def __init__(self, ctx: AppContext) -> None:
         self._counts: dict[int, int] = {}
         cols = [
-            Column(_tr("Name"), lambda c: c.display_name, width=170),
+            Column(
+                _tr("Name"),
+                lambda c: c.display_name,
+                width=190,
+                decoration=lambda c: load_thumbnail(c.photo, 160),
+            ),  # fmt: skip
             Column(_tr("Make / model"), lambda c: f"{c.make} {c.model}", width=170),
             Column(_tr("Type"), lambda c: label(c.camera_type), width=120),
             Column(_tr("Format"), lambda c: label(c.format), width=80),
@@ -154,6 +179,8 @@ class CamerasPanel(ListDetailPanel):
         self.rolls_label = QLabel()
         super().__init__(ctx, "cameras", cols, CameraForm(ctx), new_label=_tr("New camera"))
         self.table.source.dimmed = lambda c: c.status != CameraStatus.ACTIVE
+        self.table.setIconSize(QSize(48, 36))
+        self.table.verticalHeader().setDefaultSectionSize(42)
         self.editor.saved.connect(lambda _: self._load_rolls())
 
     def detail_widget(self) -> QWidget:
@@ -205,6 +232,14 @@ class CamerasPanel(ListDetailPanel):
         roll = self.rolls.proxy.mapToSource(index).data(OBJECT_ROLE)
         if roll is not None:
             self.openRoll.emit(roll.id)
+
+    def before_delete(self, obj: object) -> None:
+        self._pending_photo = obj.photo if isinstance(obj, Camera) else None
+
+    def delete_current(self) -> None:
+        self._pending_photo = None
+        super().delete_current()
+        delete_unreferenced(self.ctx.session, [self._pending_photo])
 
     def confirm_delete(self, obj: object) -> bool:
         assert isinstance(obj, Camera)

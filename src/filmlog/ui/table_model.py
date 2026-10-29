@@ -46,6 +46,7 @@ class Column:
     foreground: Callable[[Any], QColor | None] | None = None
     # Optional (chip text, chip kind) drawn as a coloured badge after the text.
     chip: Callable[[Any], tuple[str, str] | None] | None = None
+    decoration: Callable[[Any], Any] | None = None
 
 
 class ObjectTableModel(QAbstractTableModel):
@@ -90,6 +91,8 @@ class ObjectTableModel(QAbstractTableModel):
             return obj
         if role == CHIP_ROLE:
             return col.chip(obj) if col.chip else None
+        if role == Qt.ItemDataRole.DecorationRole and col.decoration:
+            return col.decoration(obj)
         if role == Qt.ItemDataRole.TextAlignmentRole and col.align_right:
             return int(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
         if role == Qt.ItemDataRole.ToolTipRole and col.tooltip:

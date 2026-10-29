@@ -24,6 +24,7 @@ from filmlog.ui.base_view import BaseView
 from filmlog.ui.cameras_view import CamerasView
 from filmlog.ui.catalogue_view import CatalogueView
 from filmlog.ui.context import AppContext
+from filmlog.ui.prints_view import PrintsView
 from filmlog.ui.rolls_view import RollsView
 from filmlog.ui.settings_dialog import SettingsDialog
 from filmlog.ui.theme import apply_theme
@@ -74,11 +75,16 @@ class MainWindow(QMainWindow):
     def _build_views(self) -> list[BaseView]:
         return [
             RollsView(self.ctx),
-            PlaceholderView(self.tr("Prints")),
+            self._prints_view(),
             self._cameras_view(),
             CatalogueView(self.ctx),
             PlaceholderView(self.tr("Statistics")),
         ]
+
+    def _prints_view(self) -> BaseView:
+        view = PrintsView(self.ctx)
+        view.openRoll.connect(self.open_roll)
+        return view
 
     def _cameras_view(self) -> BaseView:
         view = CamerasView(self.ctx)

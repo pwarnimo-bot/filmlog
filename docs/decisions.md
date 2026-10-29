@@ -98,3 +98,30 @@ each phase.
 - Selecting a new camera sets the roll's format from the camera, and if the
   camera lists exactly one lens it pre-fills the lens.
 - Tags are case-insensitive and unused tags are pruned on save/delete.
+
+## Phase 5 — Prints & images
+
+- **Prints tab** shows cards; Add / Duplicate / Edit open the print in a modal
+  dialog. **Prints view** lists all prints and edits them in place (with an
+  "Open roll" button as the link back to the roll).
+- **New print pre-fill**: paper, size, enlarger, lens, aperture, head height,
+  contrast method and processing chemistry are copied from the last print of
+  the same roll (else the last print overall) — a darkroom session usually keeps
+  these. A note says where they came from. Exposures start from the contrast
+  method's template (single → one base row; split → 00 soft + 5 hard).
+- **Duplicate print** copies everything except date (today), final flag,
+  rating and image.
+- Changing the contrast method replaces the exposure rows only while no time has
+  been entered yet.
+- Exposure table validation: at least one base/soft/hard row with time > 0;
+  split grade needs two main rows.
+- **Images** are copied into `images/` as `<sanitised-name>-<8 hex>.<ext>`;
+  records store only the file name. Thumbnails are cached as PNG in
+  `images/.thumbs/<stem>_<size>.png`.
+- Files picked during an edit that is cancelled, and files replaced/removed on
+  save, are deleted if no record references them. Deleting a roll / print /
+  camera deletes its images after the confirmation dialog (which mentions them).
+- **Darkroom theme** renders thumbnails as dim red monochrome so no bright
+  image light appears under the safelight.
+- Roll **Images tab**: contact sheet (single slot) + any number of extra scans
+  (drag & drop) + read-only thumbnails of the roll's print images.
