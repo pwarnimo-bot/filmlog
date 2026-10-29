@@ -1,0 +1,50 @@
+[project]
+name = "filmlog"
+version = "0.1.0"
+description = "Darkroom film & print manager for analog photographers"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "GPL-3.0-or-later" }
+dependencies = [
+    "PySide6>=6.6",
+    "SQLAlchemy>=2.0",
+    "alembic>=1.13",
+    "platformdirs>=4.0",
+]
+
+[project.gui-scripts]
+filmlog = "filmlog.__main__:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "pytest-qt>=4.4",
+    "ruff>=0.6",
+    "mypy>=1.10",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/filmlog"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM"]
+
+[tool.mypy]
+python_version = "3.12"
+mypy_path = "src"
+packages = ["filmlog"]
+ignore_missing_imports = true
+warn_unused_ignores = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+qt_api = "pyside6"

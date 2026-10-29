@@ -1,0 +1,43 @@
+/* Darkroom: black background, dim red text — safe-ish under the safelight. */
+
+* {
+    color: #a01818;
+    selection-background-color: #3a0505;
+    selection-color: #d02020;
+}
+QWidget {
+    background-color: #000000;
+}
+QLineEdit, QTextEdit, QPlainTextEdit, QSpinBox, QDoubleSpinBox, QComboBox, QDateEdit,
+QTableView, QListView, QTreeView {
+    background-color: #060000;
+    border: 1px solid #2a0404;
+}
+QHeaderView::section {
+    background-color: #0d0101;
+    border: 1px solid #2a0404;
+    padding: 3px;
+}
+QPushButton {
+    background-color: #120202;
+    border: 1px solid #3a0505;
+    padding: 4px 10px;
+}
+QPushButton:hover {
+    background-color: #1e0303;
+}
+QTabBar::tab {
+    background: #0d0101;
+    border: 1px solid #2a0404;
+    padding: 5px 12px;
+}
+QTabBar::tab:selected {
+    background: #2a0404;
+}
+QLabel.hint, QLabel[hint="true"] {
+    color: #d02020;
+}
+QFrame[role="card"] {
+    background: #060000;
+    border: 1px solid #3a0505;
+}
