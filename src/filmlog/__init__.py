@@ -3,7 +3,7 @@
 
 """FilmLog — darkroom film & print manager."""
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 __author__ = "Pol Warnimont"
 __copyright__ = "© 2026 Pol Warnimont"
 __license__ = "GPL-3.0-or-later"

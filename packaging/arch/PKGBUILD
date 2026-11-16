@@ -5,11 +5,11 @@
 # Skip the test suite (no python-pytest / python-pytest-qt needed):
 #   makepkg -si --nocheck
 # Build a release tag instead of the main branch:
-#   FILMLOG_REF=tag=v0.1.0 makepkg -si
+#   FILMLOG_REF=tag=v0.2.0 makepkg -si
 
 pkgname=filmlog
-pkgver=0.1.0
-pkgrel=2
+pkgver=0.2.0
+pkgrel=1
 pkgdesc="Darkroom film & print manager for analog photographers"
 arch=('any')
 url="https://github.com/pwarnimo-bot/filmlog"
