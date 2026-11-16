@@ -34,6 +34,7 @@ sha256sums=('SKIP')
 
 build() {
   cd "$pkgname"
+  rm -rf dist  # wheels from earlier builds would otherwise be installed too
   python -m build --wheel --no-isolation
 }
 
@@ -44,7 +45,7 @@ check() {
 
 package() {
   cd "$pkgname"
-  python -m installer --destdir="$pkgdir" dist/*.whl
+  python -m installer --destdir="$pkgdir" "dist/$pkgname-$pkgver-py3-none-any.whl"
   install -Dm644 packaging/filmlog.desktop "$pkgdir/usr/share/applications/filmlog.desktop"
   install -Dm644 packaging/icons/hicolor/scalable/apps/filmlog.svg \
     "$pkgdir/usr/share/icons/hicolor/scalable/apps/filmlog.svg"
