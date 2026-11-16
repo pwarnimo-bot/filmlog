@@ -138,6 +138,11 @@ def backup_now(parent: QWidget, ctx: AppContext) -> None:
 
 def render_card_pdf(roll: Roll, ctx: AppContext, path: Path) -> None:
     html = roll_card_html(roll, ctx.settings.temperature_unit, ctx.settings.length_unit)
+    write_pdf(html, path)
+
+
+def write_pdf(html: str, path: Path) -> None:
+    """Render ``html`` to an A4 PDF (needs a QGuiApplication)."""
     printer = QPrinter(QPrinter.PrinterMode.HighResolution)
     printer.setOutputFormat(QPrinter.OutputFormat.PdfFormat)
     printer.setOutputFileName(str(path))

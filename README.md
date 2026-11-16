@@ -71,7 +71,7 @@ To get a launcher entry, copy `packaging/filmlog.desktop` to
 | `Ctrl+N` | New item in the current view |
 | `Ctrl+F` | Search |
 | `Ctrl+S` | Save the open form |
-| `Esc` | Cancel / discard changes in the form |
+| `Esc` | Discard changes in the form; press again (or in the list) to close the details |
 | `Delete` | Delete the selected row (asks first) |
 | `Ctrl+1` … `Ctrl+5` | Rolls, Prints, Cameras, Catalogue, Statistics |
 | `Ctrl+P` | Export the selected roll as a PDF darkroom card |
@@ -79,10 +79,47 @@ To get a launcher entry, copy `packaging/filmlog.desktop` to
 
 Times are typed as `90`, `1:30` or `1m30s` and shown as `m:ss`.
 
+Lists use the full window width; clicking a row opens its details on the
+right. Close them with the ✕ button or `Esc`.
+
 **Demo data**: *Help → Load demo data* adds example cameras, rolls and prints
 (flagged as demo); *Help → Remove demo data* deletes them again. Development
 times in the demo and seed data are common published starting points, not
 recommendations.
+
+## Command line
+
+`filmlog-cli` works on the same database without opening a window (handy over
+SSH or in scripts). `filmlog-cli --help` and `filmlog-cli COMMAND --help`
+list every option.
+
+```sh
+filmlog-cli info                                    # where the data lives, counts
+filmlog-cli rolls --status exposed                  # rolls waiting for the tank
+filmlog-cli roll add --film hp5 --ei 800 --camera fm2 --title "Night walk"
+filmlog-cli roll develop 2026-010 --developer id-11 --dilution 1+1 --time 13:00
+filmlog-cli roll show 2026-010
+filmlog-cli recipes hp5 --developer id-11           # past results for this film
+filmlog-cli print add 2026-010 --frame 12 --paper "rc deluxe glossy" --size 18x24 \
+            --exp 00:9 --exp 5:7 --exp "5:4:burn:sky"
+filmlog-cli print duplicate 7 --exp 00:10 --exp 5:7 --final --rating 5
+filmlog-cli roll card 2026-010 card.pdf             # darkroom card (PDF or HTML)
+filmlog-cli export json all.json                    # also: import, backup, stats
+```
+
+- Names can be shortened (`hp5`, `fm2`, `id-11`); use `#ID` when a name is
+  ambiguous (the error lists the matches).
+- `roll develop` pre-fills from your last matching development, exactly like
+  *Mark as developed* in the window; `print add` copies paper, enlarger and
+  chemistry from the previous print.
+- Exposures are `GRADE:SECONDS[:PURPOSE[:NOTE]]`; two exposures without a
+  purpose mean split grade (soft, then hard).
+- In `edit` commands only the options you give change; `-` clears a field.
+- `--json` prints machine-readable output; `--db FILE` uses another database.
+- Deleting asks for confirmation (`--yes` skips it).
+
+Close the window before changing data from the command line, or reopen the
+view afterwards: the window does not watch the database for outside changes.
 
 ## Where is my data?
 
@@ -93,6 +130,7 @@ recommendations.
 | Automatic backups | `~/.local/share/filmlog/backups/` |
 | Settings | `~/.config/filmlog/settings.json` |
 
+`filmlog-cli info` (or `filmlog-cli path`) prints the locations in use.
 Locations follow the XDG base-directory spec (`$XDG_DATA_HOME`,
 `$XDG_CONFIG_HOME`). The `FILMLOG_DB` environment variable overrides the
 database path; images and backups then live next to that file.

@@ -175,6 +175,24 @@ def _roll_dict(r: Roll) -> dict[str, Any]:
     return d
 
 
+def record_dict(obj: Base) -> dict[str, Any]:
+    """Plain JSON-able columns of one record, with its id (for ``filmlog-cli --json``)."""
+    return {"id": obj.id, **_columns(obj)}  # type: ignore[attr-defined]
+
+
+def roll_dict(r: Roll) -> dict[str, Any]:
+    """A roll with development and prints nested (export format, plus ids)."""
+    d = {"id": r.id, **_roll_dict(r)}
+    d["camera"] = r.camera.display_name if r.camera is not None else None
+    for pd, p in zip(d["prints"], r.prints, strict=True):
+        pd["id"] = p.id
+    return d
+
+
+def print_dict(p: Print) -> dict[str, Any]:
+    return {"id": p.id, "roll": p.roll.code, **_print_dict(p)}
+
+
 def export_dict(session: Session) -> dict[str, Any]:
     cameras = session.scalars(select(Camera).order_by(Camera.id)).all()
     rolls = session.scalars(select(Roll).order_by(Roll.code)).all()

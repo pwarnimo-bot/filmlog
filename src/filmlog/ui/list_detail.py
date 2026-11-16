@@ -1,20 +1,26 @@
 # SPDX-FileCopyrightText: 2026 Pol Warnimont
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-"""Generic master/detail page: searchable table on the left, editor form on the right."""
+"""Generic master/detail page: searchable table on the left, editor form on the right.
+
+The detail pane is only shown while a record is open (a row is selected or a new
+record is being entered), so the list can use the full width the rest of the time.
+"""
 
 from __future__ import annotations
 
 from collections.abc import Sequence
 from typing import Any
 
-from PySide6.QtCore import QByteArray, Qt, Signal
+from PySide6.QtCore import QByteArray, QModelIndex, Qt, Signal
+from PySide6.QtGui import QKeySequence, QShortcut
 from PySide6.QtWidgets import (
     QHBoxLayout,
     QLineEdit,
     QMessageBox,
     QPushButton,
     QSplitter,
+    QToolButton,
     QVBoxLayout,
     QWidget,
 )
@@ -76,9 +82,26 @@ class ListDetailPanel(QWidget):
         lv.addWidget(self.filter_bar)
         lv.addWidget(self.table, 1)
 
+        self.close_button = QToolButton()
+        self.close_button.setText("✕")
+        self.close_button.setAutoRaise(True)
+        self.close_button.setToolTip(self.tr("Close the details (Esc)"))
+        self.close_button.clicked.connect(self.close_detail)
+        close_row = QHBoxLayout()
+        close_row.setContentsMargins(0, 0, 0, 0)
+        close_row.addStretch(1)
+        close_row.addWidget(self.close_button)
+
+        self.detail_pane = QWidget()
+        dv = QVBoxLayout(self.detail_pane)
+        dv.setContentsMargins(0, 0, 0, 0)
+        dv.setSpacing(0)
+        dv.addLayout(close_row)
+        dv.addWidget(self.detail_widget(), 1)
+
         self.splitter = QSplitter(Qt.Orientation.Horizontal)
         self.splitter.addWidget(left)
-        self.splitter.addWidget(self.detail_widget())
+        self.splitter.addWidget(self.detail_pane)
         self.splitter.setStretchFactor(0, 3)
         self.splitter.setStretchFactor(1, 2)
         self._name = name
@@ -89,10 +112,17 @@ class ListDetailPanel(QWidget):
         layout.setContentsMargins(0, 0, 0, 0)
         layout.addWidget(self.splitter)
 
+        # Esc in the list closes the details too.
+        esc = QShortcut(QKeySequence(Qt.Key.Key_Escape), self.table)
+        esc.setContext(Qt.ShortcutContext.WidgetShortcut)
+        esc.activated.connect(self.close_detail)
+
         editor.saved.connect(self._on_saved)
         editor.cancelled.connect(self._on_cancelled)
-        editor.clear()
+        editor.hasObjectChanged.connect(self._set_detail_visible)
+        editor.closeRequested.connect(self.close_detail)
         self._suppress = False
+        editor.clear()
 
     def detail_widget(self) -> QWidget:
         """The right-hand side; override to wrap the editor (e.g. in tabs)."""
@@ -155,6 +185,30 @@ class ListDetailPanel(QWidget):
         """Ask about unsaved changes before leaving the current record."""
         return self.editor.maybe_discard()
 
+    # -- detail pane -------------------------------------------------------
+
+    def _set_detail_visible(self, visible: bool) -> None:
+        if visible == self.detail_pane.isVisibleTo(self):
+            return
+        if not visible:
+            self._remember_split()
+        self.detail_pane.setVisible(visible)
+
+    def detail_open(self) -> bool:
+        return self.detail_pane.isVisibleTo(self)
+
+    def close_detail(self) -> None:
+        """Hide the details (asking about unsaved changes first)."""
+        if self.editor.obj is None or not self.maybe_discard():
+            return
+        self._suppress = True
+        self.table.clearSelection()
+        self.table.setCurrentIndex(QModelIndex())
+        self._suppress = False
+        self.delete_button.setEnabled(False)
+        self.editor.clear()
+        self.table.setFocus()
+
     def new_item(self) -> None:
         if not self.maybe_discard():
             return
@@ -206,6 +260,13 @@ class ListDetailPanel(QWidget):
         if f"{self._name}__split" not in self.ctx.settings.table_states:
             self.splitter.setSizes([left * 100, right * 100])
 
+    def _remember_split(self) -> None:
+        """Store the list/detail proportions while both sides are visible."""
+        if not self.detail_pane.isVisibleTo(self) or 0 in self.splitter.sizes():
+            return
+        data = bytes(self.splitter.saveState().toBase64().data()).decode()
+        self.ctx.settings.table_states[f"{self._name}__split"] = data
+
     def _restore_splitter(self) -> None:
         state = self.ctx.settings.table_states.get(f"{self._name}__split")
         if state:
@@ -213,5 +274,4 @@ class ListDetailPanel(QWidget):
 
     def shutdown(self) -> None:
         self.table.save_state()
-        data = bytes(self.splitter.saveState().toBase64().data()).decode()
-        self.ctx.settings.table_states[f"{self._name}__split"] = data
+        self._remember_split()

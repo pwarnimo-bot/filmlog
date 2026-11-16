@@ -64,3 +64,31 @@ def test_chemical_kind_filter(main_window: MainWindow) -> None:
     total = chem.table.proxy.rowCount()
     chem.kind_filter.setCurrentIndex(chem.kind_filter.findData("stop_bath"))  # type: ignore[attr-defined]
     assert 0 < chem.table.proxy.rowCount() < total
+
+
+def test_detail_pane_only_open_for_a_selected_row(main_window: MainWindow) -> None:
+    win = main_window
+    win.show_view(2)
+    view = win.current_view()
+    assert isinstance(view, CamerasView)
+    panel = view.panel
+    assert not panel.detail_open()  # the list uses the full width
+    panel.new_item()
+    assert panel.detail_open()
+    panel.editor.make.setText("Pentax")
+    panel.editor.model.setText("K1000")
+    assert panel.editor.save()
+    assert panel.detail_open()
+    # Esc with nothing to discard closes the details and clears the selection.
+    panel.editor.cancel()
+    assert not panel.detail_open()
+    assert panel.table.current_object() is None
+    # Clicking a row opens them again; the close button hides them.
+    panel.table.selectRow(0)
+    assert panel.detail_open()
+    panel.close_button.click()
+    assert not panel.detail_open()
+    # A new record that is cancelled closes the pane too.
+    panel.new_item()
+    panel.editor.cancel()
+    assert not panel.detail_open()

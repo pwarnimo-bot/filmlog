@@ -184,3 +184,26 @@ each phase.
   clipped instead of widening the window. Roll list column order is now Code,
   Status, Title, … so the status stays visible (saved under a new table key,
   `rolls_v2`, so old column layouts aren't misapplied).
+
+## Command line & collapsible details
+
+- **`filmlog-cli`** is a separate console entry point (argparse, no new
+  dependencies); `filmlog` stays the GUI. It imports no Qt, except lazily for
+  the PDF darkroom card (rendered off-screen). It uses the same services, so
+  migrations/backups, seeding, pre-fill and validation rules match the GUI
+  (development time required, status can't leave *developed* while a
+  development exists, split grade needs two exposures, deletes confirm).
+- Records are referenced by roll **code**, print **id**, and for cameras /
+  catalogue by **name words** (`services/lookup.py`): an exact display name
+  wins, then whole-word matches, then substring matches; `#ID` always works.
+  Ambiguous references are errors that list the candidates — never a guess.
+- Exposures on the command line: `GRADE:SECONDS[:PURPOSE[:NOTE]]`, grades
+  like `2.5` become `2½`. Without `--method`, two or more exposures without a
+  purpose (or any soft/hard) mean split grade.
+- `roll develop` on an already developed roll edits that development (only the
+  given options). `roll undevelop` deletes it and sets the roll to *exposed*.
+- CLI text is plain English (not yet translatable; gettext could be added).
+- **Details pane**: list views use the full width; the detail pane opens when a
+  row is selected or a new record is started, and closes with ✕, `Esc` in the
+  list, `Esc` in a form with nothing to discard, or when the record is deleted.
+  Splitter proportions are remembered from when the pane was last open.

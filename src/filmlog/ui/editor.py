@@ -32,6 +32,10 @@ class EditorForm(QWidget):
     saved = Signal(object)
     cancelled = Signal()
     dirtyChanged = Signal(bool)  # noqa: N815
+    # True when a record (existing or new) is shown, False after ``clear``.
+    hasObjectChanged = Signal(bool)  # noqa: N815
+    # Esc pressed with nothing to discard: the surrounding view may close the form.
+    closeRequested = Signal()  # noqa: N815
 
     def __init__(self, ctx: AppContext, parent: QWidget | None = None) -> None:
         super().__init__(parent)
@@ -149,12 +153,14 @@ class EditorForm(QWidget):
             self._loading = False
         self.setEnabled(True)
         self.set_clean()
+        self.hasObjectChanged.emit(True)
 
     def clear(self) -> None:
         self.obj = None
         self.heading.setText("")
         self.setEnabled(False)
         self.set_clean()
+        self.hasObjectChanged.emit(False)
 
     def focus_first(self) -> None:
         if self.focus_chain:
@@ -199,11 +205,14 @@ class EditorForm(QWidget):
         if self.obj is None:
             return
         was_new = self.is_new()
+        nothing_to_discard = not was_new and not self._dirty
         if was_new:
             self.clear()
         else:
             self.load(self.obj)
         self.cancelled.emit()
+        if nothing_to_discard:
+            self.closeRequested.emit()
 
     def maybe_discard(self) -> bool:
         """Ask before leaving a form with unsaved changes. True → OK to proceed."""
