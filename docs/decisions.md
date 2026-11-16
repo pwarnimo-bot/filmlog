@@ -207,3 +207,25 @@ each phase.
   row is selected or a new record is started, and closes with ✕, `Esc` in the
   list, `Esc` in a form with nothing to discard, or when the record is deleted.
   Splitter proportions are remembered from when the pane was last open.
+
+## Full-screen terminal app
+
+- **Textual** (approved by the author) powers the full-screen terminal app.
+  `filmlog-cli` without arguments opens it; with a command it still runs that
+  command (kept for scripts). Arch: `python-textual`.
+- Layout: tabs for the five main views; a roll opens as its **own screen**
+  with tabs (Roll / Development / Prints / Images); every edit happens in a
+  **modal form dialog** built from a declarative field list
+  (`tui/forms.py`), validated inline. Esc on a changed form asks first.
+- A **single click** opens a row (Textual's table needs two clicks by default;
+  `ClickTable` changes that). Extra click events while a record is already
+  open are ignored.
+- Theme follows the shared `settings.json`: *system* → the terminal's own
+  palette (`ansi-dark`), *light*/*dark* → Textual themes, *darkroom* → a
+  red-on-black theme; status chips are plain red text there.
+- Images: terminals can't show them reliably, so forms take a file path
+  (copied into `images/` like in the window app) and the Images tab lists the
+  stored files.
+- Deleting (roll / print / camera / development) lives in
+  `services/records.py`, shared by the window-less command mode and the
+  terminal app; print-exposure validation is `prints.exposure_problem`.

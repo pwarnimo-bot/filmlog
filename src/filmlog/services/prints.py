@@ -85,6 +85,16 @@ def contrast_summary(method: ContrastMethod, exposures: Sequence[PrintExposure])
     return text.strip()
 
 
+def exposure_problem(method: ContrastMethod, exposures: Sequence[PrintExposure]) -> str | None:
+    """Why these exposures can't be saved, or None if they're fine."""
+    main = [e for e in exposures if e.purpose in _MAIN and (e.seconds or 0) > 0]
+    if not main:
+        return "A print needs at least one base/soft/hard exposure with a time."
+    if method == ContrastMethod.SPLIT_GRADE and len(main) < 2:
+        return "Split grade needs two exposures (soft and hard)."
+    return None
+
+
 def copy_exposures(exposures: Sequence[PrintExposure]) -> list[PrintExposure]:
     return [
         PrintExposure(

@@ -8,7 +8,6 @@ from __future__ import annotations
 import argparse
 from typing import Any
 
-from sqlalchemy import func, select
 from sqlalchemy.exc import IntegrityError
 
 from filmlog.cli.common import CliError, Ctx, enum_help, parse_enum, print_json, print_table
@@ -22,7 +21,6 @@ from filmlog.db.enums import (
     PaperTone,
 )
 from filmlog.db.models import Chemical, FilmStock, Manufacturer, Paper
-from filmlog.seed.loader import get_or_create_manufacturer
 from filmlog.services import catalogue, lookup
 from filmlog.services.exchange import record_dict
 
@@ -159,13 +157,8 @@ def _commit(ctx: Ctx, obj: Any) -> None:
         ctx.print(f"Added #{obj.id} {obj.display_name}")
 
 
-def _maker(ctx: Ctx, name: str) -> Manufacturer | None:
-    """Existing manufacturer (any capitalisation) or a new one."""
-    name = name.strip()
-    m = ctx.session.scalar(
-        select(Manufacturer).where(func.lower(Manufacturer.name) == name.lower())
-    )
-    return m or get_or_create_manufacturer(ctx.session, name)
+def _maker(ctx: Ctx, name: str) -> Manufacturer:
+    return catalogue.find_or_create_manufacturer(ctx.session, name)
 
 
 def cmd_film_add(ctx: Ctx, a: argparse.Namespace) -> None:

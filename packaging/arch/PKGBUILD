@@ -9,7 +9,7 @@
 
 pkgname=filmlog
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Darkroom film & print manager for analog photographers"
 arch=('any')
 url="https://github.com/pwarnimo-bot/filmlog"
@@ -20,6 +20,7 @@ depends=(
   'python-sqlalchemy'
   'python-alembic'
   'python-platformdirs'
+  'python-textual'
 )
 optdepends=(
   'qt6-charts: charts in the Statistics view (tables are shown without it)'

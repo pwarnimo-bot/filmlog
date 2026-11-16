@@ -87,39 +87,52 @@ right. Close them with the ✕ button or `Esc`.
 times in the demo and seed data are common published starting points, not
 recommendations.
 
-## Command line
+## Terminal version (`filmlog-cli`)
 
-`filmlog-cli` works on the same database without opening a window (handy over
-SSH or in scripts). `filmlog-cli --help` and `filmlog-cli COMMAND --help`
-list every option.
+`filmlog-cli` is FilmLog for the terminal — handy over SSH or without a
+desktop. Run it **without arguments** to open the full-screen app:
 
 ```sh
-filmlog-cli info                                    # where the data lives, counts
-filmlog-cli rolls --status exposed                  # rolls waiting for the tank
-filmlog-cli roll add --film hp5 --ei 800 --camera fm2 --title "Night walk"
-filmlog-cli roll develop 2026-010 --developer id-11 --dilution 1+1 --time 13:00
-filmlog-cli roll show 2026-010
-filmlog-cli recipes hp5 --developer id-11           # past results for this film
-filmlog-cli print add 2026-010 --frame 12 --paper "rc deluxe glossy" --size 18x24 \
-            --exp 00:9 --exp 5:7 --exp "5:4:burn:sky"
-filmlog-cli print duplicate 7 --exp 00:10 --exp 5:7 --final --rating 5
-filmlog-cli roll card 2026-010 card.pdf             # darkroom card (PDF or HTML)
-filmlog-cli export json all.json                    # also: import, backup, stats
+filmlog-cli
 ```
 
-- Names can be shortened (`hp5`, `fm2`, `id-11`); use `#ID` when a name is
-  ambiguous (the error lists the matches).
-- `roll develop` pre-fills from your last matching development, exactly like
-  *Mark as developed* in the window; `print add` copies paper, enlarger and
-  chemistry from the previous print.
-- Exposures are `GRADE:SECONDS[:PURPOSE[:NOTE]]`; two exposures without a
-  purpose mean split grade (soft, then hard).
-- In `edit` commands only the options you give change; `-` clears a field.
-- `--json` prints machine-readable output; `--db FILE` uses another database.
-- Deleting asks for confirmation (`--yes` skips it).
+It works on the same database and settings as the window app:
 
-Close the window before changing data from the command line, or reopen the
-view afterwards: the window does not watch the database for outside changes.
+- **Tabs**: Rolls, Prints, Cameras, Catalogue (Films, Chemicals, Papers,
+  Manufacturers, Agitation presets) and Statistics. Switch with `1`–`5` or the
+  mouse.
+- **Lists** are searchable (`ctrl+f`), filterable and sortable (click a column
+  header). A single click or `Enter` opens a record.
+- **A roll opens in its own screen** with tabs *Roll*, *Development*, *Prints*
+  and *Images*. `e` edits the roll, `m` marks it as developed (pre-filled from
+  your last matching development, with a *Past results…* lookup), `p` adds a
+  print, `c` saves the darkroom card as PDF/HTML, `Esc` goes back.
+- **Dialogs** are forms with inline validation (red hints, no pop-ups).
+  `ctrl+s` saves, `Esc` cancels (asking first if you changed something). Times
+  are typed as `8:30`, `90` or `1m30s`. Dropdowns search as you type.
+- **Prints** have an exposure table (base / soft / hard / dodge / burn / flash)
+  with a running total. *Duplicate* copies a print for the next attempt.
+- **Command palette** (`ctrl+p`): settings (theme incl. **Darkroom**, °C/°F,
+  cm/in), export JSON/CSV, import, backup, demo data, data locations.
+- Images can't be shown in a terminal; attach them by typing a file path in
+  the roll/print form. The *Images* tab lists the stored files.
+
+### Single commands (scripts)
+
+With a command, `filmlog-cli` runs just that and exits.
+`filmlog-cli --help` lists everything.
+
+```sh
+filmlog-cli info                                    # where the data lives
+filmlog-cli rolls --status exposed
+filmlog-cli roll add --film hp5 --ei 800 --camera fm2 --title "Night walk"
+filmlog-cli roll develop 2026-010 --developer id-11 --dilution 1+1 --time 13:00
+filmlog-cli print add 2026-010 --frame 12 --exp 00:9 --exp 5:7
+filmlog-cli --json rolls > rolls.json
+```
+
+Don't edit the same data in two programs at once: the window and terminal app
+don't see each other's changes until you reopen the view.
 
 ## Where is my data?
 

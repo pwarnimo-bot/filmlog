@@ -24,9 +24,8 @@ from filmlog.cli.common import (
 from filmlog.db.enums import CameraStatus, CameraType, FilmFormat
 from filmlog.db.models import Camera
 from filmlog.services import cameras as camera_service
-from filmlog.services import lookup
+from filmlog.services import lookup, records
 from filmlog.services.exchange import record_dict
-from filmlog.services.images import delete_unreferenced
 
 TYPE_ALIASES = {
     "medium-format slr": CameraType.MEDIUM_FORMAT_SLR,
@@ -196,17 +195,7 @@ def cmd_edit(ctx: Ctx, a: argparse.Namespace) -> None:
 def cmd_delete(ctx: Ctx, a: argparse.Namespace) -> None:
     s = ctx.session
     c = lookup.find_camera(s, a.camera)
-    n = camera_service.roll_counts(s).get(c.id, 0)
-    question = f"Delete camera “{c.display_name}”?"
-    if n:
-        question = (
-            f"Camera “{c.display_name}” was used for {n} roll(s); they keep their data but "
-            "lose the camera link (consider '--status retired' or 'sold' instead). Delete it?"
-        )
-    if not confirm(question, a.yes):
+    if not confirm(records.camera_delete_question(s, c), a.yes):
         return
-    photo = c.photo
-    s.delete(c)
-    s.commit()
-    delete_unreferenced(s, [photo])
+    records.delete_camera(s, c)
     ctx.note(f"Deleted camera “{c.display_name}”.")

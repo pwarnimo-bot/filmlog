@@ -26,10 +26,9 @@ from filmlog.cli.common import (
 )
 from filmlog.db.enums import FILTER_GRADES, ChemicalKind, ContrastMethod, ExposurePurpose
 from filmlog.db.models import Print, PrintExposure
-from filmlog.services import lookup
+from filmlog.services import lookup, records
 from filmlog.services import prints as print_service
 from filmlog.services.exchange import print_dict
-from filmlog.services.images import delete_unreferenced
 from filmlog.services.timefmt import format_duration, format_seconds
 from filmlog.services.units import from_display_length, to_display_length
 
@@ -299,14 +298,11 @@ def _set_exposures(p: Print, specs: list[str], method_given: bool) -> None:
 
 
 def _validate_exposures(p: Print) -> None:
-    main = [e for e in p.exposures if e.purpose in _MAIN and (e.seconds or 0) > 0]
-    if not main:
+    problem = print_service.exposure_problem(p.contrast_method, p.exposures)
+    if problem:
         raise CliError(
-            "A print needs at least one base/soft/hard exposure with a time, "
-            "e.g. --exp 2.5:14 (single filter) or --exp 00:9 --exp 5:7 (split grade)."
+            f"{problem} Example: --exp 2.5:14 (single filter) or --exp 00:9 --exp 5:7 (split)."
         )
-    if p.contrast_method == ContrastMethod.SPLIT_GRADE and len(main) < 2:
-        raise CliError("Split grade needs two exposures, e.g. --exp 00:9 --exp 5:7.")
 
 
 def _size(text: str) -> str:
@@ -437,8 +433,5 @@ def cmd_delete(ctx: Ctx, a: argparse.Namespace) -> None:
     label = f"print #{p.id} (roll {p.roll.code}, frame {p.frame or '?'})"
     if not confirm(f"Delete {label}" + (" and its image" if p.image else "") + "?", a.yes):
         return
-    image = p.image
-    s.delete(p)
-    s.commit()
-    delete_unreferenced(s, [image])
+    records.delete_print(s, p)
     ctx.note(f"Deleted {label}.")

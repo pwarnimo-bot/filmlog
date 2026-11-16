@@ -30,10 +30,9 @@ from filmlog.cli.common import (
 from filmlog.db.enums import ChemicalKind, FilmFormat, RollStatus
 from filmlog.db.models import Development, Roll
 from filmlog.services import development as dev_service
-from filmlog.services import lookup
+from filmlog.services import lookup, records
 from filmlog.services import rolls as roll_service
 from filmlog.services.exchange import roll_dict
-from filmlog.services.images import delete_unreferenced, images_of_roll
 from filmlog.services.prints import contrast_summary, total_exposure
 from filmlog.services.pushpull import badge_text, compute_stops
 from filmlog.services.timefmt import format_duration, format_seconds
@@ -508,29 +507,16 @@ def cmd_undevelop(ctx: Ctx, a: argparse.Namespace) -> None:
         raise CliError(f"Roll {r.code} has no development record.")
     if not confirm(f"Delete the development record of roll {r.code}?", a.yes):
         return
-    s.delete(r.development)
-    r.development = None
-    r.status = RollStatus.EXPOSED
-    s.commit()
+    records.remove_development(s, r)
     ctx.note(f"Development removed; roll {r.code} is now 'exposed'.")
 
 
 def cmd_delete(ctx: Ctx, a: argparse.Namespace) -> None:
     s = ctx.session
     r = lookup.find_roll(s, a.code)
-    question = f"Delete roll {r.code}"
-    if r.prints:
-        frames = ", ".join(f"#{p.id} frame {p.frame or '?'}" for p in r.prints)
-        question += f" and its {len(r.prints)} print(s) ({frames})"
-    images = images_of_roll(r)
-    if images:
-        question += f" and {len(images)} image file(s)"
-    if not confirm(question + "?", a.yes):
+    if not confirm(records.roll_delete_question(r), a.yes):
         return
-    s.delete(r)
-    roll_service.prune_unused_tags(s)
-    s.commit()
-    delete_unreferenced(s, images)
+    records.delete_roll(s, r)
     ctx.note(f"Deleted roll {a.code}.")
 
 
@@ -581,13 +567,13 @@ def cmd_card(ctx: Ctx, a: argparse.Namespace) -> None:
     if suffix in (".html", ".htm"):
         out.write_text(html, encoding="utf-8")
     elif suffix == ".pdf":
-        _write_pdf(html, out)
+        write_pdf_file(html, out)
     else:
         raise CliError("The output file must end in .pdf or .html.")
     ctx.note(f"Wrote {out}")
 
 
-def _write_pdf(html: str, out: Path) -> None:
+def write_pdf_file(html: str, out: Path) -> None:
     """PDF rendering needs Qt; it runs headless (no window is opened)."""
     import os
 

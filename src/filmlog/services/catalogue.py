@@ -138,3 +138,14 @@ def can_delete(session: Session, item: CatalogueItem) -> bool:
     if isinstance(item, Chemical) and item.is_builtin:
         return False
     return usage_count(session, item) == 0
+
+
+def find_or_create_manufacturer(session: Session, name: str) -> Manufacturer:
+    """Existing manufacturer (any capitalisation) or a new one."""
+    name = name.strip()
+    m = session.scalar(select(Manufacturer).where(func.lower(Manufacturer.name) == name.lower()))
+    if m is None:
+        m = Manufacturer(name=name, notes="")
+        session.add(m)
+        session.flush()
+    return m

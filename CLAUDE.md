@@ -296,7 +296,7 @@ Build in phases. **After each phase: run `ruff`, `mypy` and `pytest`, make sure 
 Guidelines:
 - If a requirement here is ambiguous, pick the simplest sensible option, note the decision in `docs/decisions.md`, and keep going; only stop to ask me for things that would be hard to undo (e.g. changing the data model after real data exists).
 - Never delete or overwrite `~/.local/share/filmlog/filmlog.db` during development; use a separate DB via env var `FILMLOG_DB=/tmp/filmlog-dev.db` for testing and demo runs.
-- Keep dependencies minimal: PySide6, SQLAlchemy, Alembic, platformdirs (+ dev deps). Ask before adding others.
-- On Arch, system packages exist for the runtime deps (`pyside6`, `python-sqlalchemy`, `python-alembic`, `python-platformdirs`); the PKGBUILD should depend on those rather than vendoring.
+- Keep dependencies minimal: PySide6, SQLAlchemy, Alembic, platformdirs, Textual (terminal UI; approved later) (+ dev deps). Ask before adding others.
+- On Arch, system packages exist for the runtime deps (`pyside6`, `python-sqlalchemy`, `python-alembic`, `python-platformdirs`, `python-textual`); the PKGBUILD should depend on those rather than vendoring.
 - English UI text, all strings wrapped for translation (`self.tr(...)`) so a German/French translation can be added later.
 - Metric by default (°C, cm), with °F and inches available in Settings.

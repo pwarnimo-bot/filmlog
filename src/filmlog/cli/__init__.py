@@ -14,6 +14,7 @@ from filmlog import __version__
 
 EPILOG = """\
 examples:
+  filmlog-cli                                        open the full-screen app
   filmlog-cli info                                   where is my data?
   filmlog-cli rolls --status exposed                 rolls waiting for the tank
   filmlog-cli roll add --film hp5 --ei 800 --camera fm2 --title "Night walk"
@@ -49,14 +50,15 @@ def build_parser() -> argparse.ArgumentParser:
 
     parser = argparse.ArgumentParser(
         prog="filmlog-cli",
-        description="FilmLog on the command line: cameras, rolls, development and prints.",
+        description="FilmLog in the terminal. Without a COMMAND it opens the full-screen app "
+        "(tabs, dialogs, mouse); with a COMMAND it runs that one command, e.g. for scripts.",
         epilog=EPILOG,
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument("--version", action="version", version=f"FilmLog {__version__}")
     parser.add_argument("--db", metavar="FILE", help="use this database file (or set FILMLOG_DB)")
     parser.add_argument("--json", action="store_true", help="print JSON instead of tables")
-    sub = parser.add_subparsers(dest="command", required=True, metavar="COMMAND")
+    sub = parser.add_subparsers(dest="command", metavar="COMMAND")
     rolls.register(sub)
     prints.register(sub)
     cameras.register(sub)
@@ -70,6 +72,13 @@ def main(argv: Sequence[str] | None = None) -> int:
     args = parser.parse_args(argv)
     if args.db:
         os.environ["FILMLOG_DB"] = args.db
+    if args.command is None:
+        # No command: open the full-screen terminal app.
+        if not sys.stdout.isatty():
+            parser.error("a COMMAND is required when not running in a terminal")
+        from filmlog.tui.app import run
+
+        return run()
 
     from filmlog import paths
     from filmlog.cli.common import CliError, Ctx
